@@ -1,4 +1,144 @@
 <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #006a6c;
+        }
+        .btn_login{
+            background-color: #006a6c;
+        }
+        .btn_login:hover {
+            background-color: #00585a;
+        }
+
+        .login-container {
+            margin-top: 100px;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* .btn-login {
+            background-color: #0d6efd;
+            color: #fff;
+        }
+
+        .btn-login:hover {
+            background-color: #0b5ed7;
+        } */
+    </style>
+</head>
+
+<body>
+    <div class="container login-container">
+        <div class="row justify-content-center">
+    <div class="col-md-5 col-lg-4">
+        <div class="card p-4 card_bottom">
+            <div class="card-body">
+                <!-- Title -->
+                <h3 class="card-title text-center mb-1">Admin Login</h3>
+
+                <!-- Subtitle -->
+                <p class="text-center text-muted mb-4">
+                    Access Your Business Dashboard
+                </p>
+
+                <form method="POST" action="{{ route('admin.login') }}">
+                    @csrf
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white">
+                                <i class="far fa-envelope"></i>
+                            </span>
+                            <input
+                                type="email"
+                                class="form-control"
+                                id="email"
+                                name="email"
+                                placeholder="Enter email"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                            <input
+                                type="password"
+                                class="form-control"
+                                id="password"
+                                name="password"
+                                placeholder="Enter password"
+                                required
+                            >
+                            <span class="input-group-text bg-white" style="cursor:pointer;" onclick="togglePassword()">
+                                <i id="password-icon" class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Remember Me -->
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                        <label class="form-check-label" for="remember">Remember me</label>
+                    </div>
+
+                    <button type="submit" class="btn btn_login w-100 text-white">
+                        Login
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function togglePassword() {
+            const password = document.getElementById('password');
+            const icon = document.getElementById('password-icon');
+            if (password.type === 'password') {
+                password.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                password.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+    </script>
+</body>
+
+</html>
+
+
+
+{{-- <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
   <meta charset="UTF-8" />
@@ -145,7 +285,7 @@
         <div class="mb-4">
           <label for="username" class="form-label">Username or Email</label>
           <div class="input-group input-group-lg">
-            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <span class="input-group-text "><i class="fas fa-user"></i></span>
             <input type="email" class="form-control" id="email"
                    name="email" placeholder="admin@company.com" required autofocus>
           </div>
@@ -180,9 +320,7 @@
         </button>
       </form>
 
-      {{-- <div class="small-footer">
-        © 2026 Your Company • All rights reserved
-      </div> --}}
+
     </div>
   </div>
 
@@ -208,4 +346,4 @@
   </script>
 
 </body>
-</html>
+</html> --}}

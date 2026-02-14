@@ -124,6 +124,34 @@
         .table-responsive table {
             min-width: 600px;
         }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .activity-item {
+            position: relative;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 16px;
+        }
+
+        .chart-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
     </style>
 @endpush
 
@@ -134,29 +162,6 @@
     <!-- Main Content Area -->
     <main class="container-fluid p-3 p-lg-4">
         <!-- Dashboard Header -->
-        <div class="dashboard-header p-4 p-lg-5 mb-4 position-relative">
-            <div class="position-relative z-1">
-                <div class="row align-items-center">
-                    <div class="col-lg-8">
-                        <div
-                            class="d-inline-flex align-items-center gap-2 bg-light bg-opacity-10 px-3 py-2 rounded-pill mb-3">
-                            <i class="fas fa-bolt"></i>
-                            <span class="fw-semibold">Admin</span>
-                        </div>
-                        <h1 class="display-6 fw-bold mb-2">System Overview</h1>
-                        <p class="lead opacity-90 mb-0">Monitoring active users •
-                           </p>
-                    </div>
-                    {{-- <div class="col-lg-4 mt-3 mt-lg-0 text-lg-end">
-                        <div class="system-status d-inline-flex mb-2">
-                            <div class="status-indicator"></div>
-                            <span class="fw-semibold">All Systems Operational</span>
-                        </div>
-                        <p class="mb-0 opacity-70">99.8% Uptime</p>
-                    </div> --}}
-                </div>
-            </div>
-        </div>
 
         <!-- Stats Cards -->
         <div class="row g-3 mb-3">
@@ -164,13 +169,52 @@
                 <div class="stats-card p-4">
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="flex-grow-1">
-                            <p class="text-uppercase text-muted small fw-semibold mb-2">Total Users</p>
-                            <p class="stats-value mb-3">
-                                10
+                            <p class="text-uppercase text-muted small fw-semibold mb-2">
+                                Total Revenue
                             </p>
+
+                            <p class="stats-value mb-1">
+                                $10,000
+                            </p>
+
+                            <!-- Trend -->
+                            <p class="mb-0 small text-success fw-semibold">
+                                <i class="fa-solid fa-arrow-trend-up me-1"></i>
+                                12.5% increase
+                            </p>
+                            <small class="text-mute">vs last month</small>
                         </div>
+
                         <div class="stats-icon-container" style="background-color: rgba(26, 115, 232, 0.1);">
-                            <i class="fas fa-building fa-2x text-primary" style="color: var(--primary-blue);"></i>
+                            <i class="fa-solid fa-dollar-sign fa-2x text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6 col-lg-3">
+                <div class="stats-card p-4">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <p class="text-uppercase text-muted small fw-semibold mb-2">
+                                Active User
+                            </p>
+
+                            <p class="stats-value mb-1">
+                                1045
+                            </p>
+
+                            <!-- Trend -->
+                            <p class="mb-0 small text-success fw-semibold">
+                                <i class="fa-solid fa-arrow-trend-up me-1"></i>
+                                8.2% increase
+                            </p>
+                            <small class="text-mute">vs last month</small>
+                        </div>
+
+                        <div class="stats-icon-container" style="background-color: rgba(26, 115, 232, 0.1);">
+                            <i class="fa-solid fa-user-group fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -180,9 +224,24 @@
                 <div class="stats-card p-4">
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="flex-grow-1">
-                            <p class="text-uppercase text-muted small fw-semibold mb-2">Monthly Revenue</p>
-                            <p class="stats-value mb-3">
-                                $ 10</p>
+                            <p class="text-uppercase text-muted small fw-semibold mb-2">
+                                Total Order
+                            </p>
+
+                            <p class="stats-value mb-1">
+                                1154
+                            </p>
+
+                            <!-- Trend -->
+                            <p class="mb-0 small text-success fw-semibold">
+                                <i class="fa-solid fa-arrow-trend-down me-1"></i>
+                                8.2% increase
+                            </p>
+                            <small class="text-mute">vs last month</small>
+                        </div>
+
+                        <div class="stats-icon-container" style="background-color: rgba(26, 115, 232, 0.1);">
+                            <i class="fa-solid fa-bag-shopping fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -192,25 +251,24 @@
                 <div class="stats-card p-4">
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="flex-grow-1">
-                            <p class="text-uppercase text-muted small fw-semibold mb-2">Documents Processed</p>
-                            <p class="stats-value mb-3">15</p>
-                        </div>
-                        <div class="stats-icon-container" style="background-color: rgba(220, 252, 231, 1);">
-                            <i class="fas fa-file-text fa-2x text-success"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            <p class="text-uppercase text-muted small fw-semibold mb-2">
+                                Growth Rate
+                            </p>
 
-            <div class="col-md-6 col-lg-3">
-                <div class="stats-card p-4">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div class="flex-grow-1">
-                            <p class="text-uppercase text-muted small fw-semibold mb-2">Generated Reports</p>
-                            <p class="stats-value mb-3">15</p>
+                            <p class="stats-value mb-1">
+                                28%
+                            </p>
+
+                            <!-- Trend -->
+                            <p class="mb-0 small text-success fw-semibold">
+                                <i class="fa-solid fa-arrow-trend-up me-1"></i>
+                                2.8% increase
+                            </p>
+                            <small class="text-mute">vs last month</small>
                         </div>
-                        <div class="stats-icon-container" style="background-color: rgba(243, 232, 255, 1);">
-                            <i class="fas fa-download fa-2x text-purple"></i>
+
+                        <div class="stats-icon-container" style="background-color: rgba(26, 115, 232, 0.1);">
+                            <i class="fa-solid fa-arrow-trend-up fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -222,7 +280,7 @@
             <div class="col-lg-6">
                 <div class="chart-card">
                     <div class="p-4 border-bottom">
-                        <h5 class="mb-1">Monthly Revenue</h5>
+                        <h5 class="mb-1">User Growth</h5>
                         <p class="text-muted mb-0 small">Last 6 months</p>
                     </div>
                     <div class="p-4">
@@ -236,16 +294,70 @@
             <div class="col-lg-6">
                 <div class="chart-card">
                     <div class="p-4 border-bottom">
-                        <h5 class="mb-1">Document Processing</h5>
+                        <h5 class="mb-1">Recent Activity</h5>
                         <p class="text-muted mb-0 small">Last 7 days</p>
                     </div>
+
                     <div class="p-4">
-                        <div class="chart-container">
-                            <canvas id="documentsChart"></canvas>
-                        </div>
+                        <ul class="activity-list list-unstyled mb-0">
+
+                            <li class="activity-item d-flex align-items-start">
+                                <div class="activity-icon bg-success">
+                                    <i class="fa-solid fa-file-circle-check"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <p class="mb-1 fw-semibold">Document Approved</p>
+                                    <p class="mb-0 small text-muted">
+                                        Invoice_1023.pdf was approved
+                                    </p>
+                                    <small class="text-muted">2 hours ago</small>
+                                </div>
+                            </li>
+
+                            <li class="activity-item d-flex align-items-start">
+                                <div class="activity-icon bg-primary">
+                                    <i class="fa-solid fa-file-arrow-up"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <p class="mb-1 fw-semibold">New Document Uploaded</p>
+                                    <p class="mb-0 small text-muted">
+                                        Contract_Agreement.docx uploaded
+                                    </p>
+                                    <small class="text-muted">5 hours ago</small>
+                                </div>
+                            </li>
+
+                            <li class="activity-item d-flex align-items-start">
+                                <div class="activity-icon bg-warning">
+                                    <i class="fa-solid fa-file-pen"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <p class="mb-1 fw-semibold">Document Updated</p>
+                                    <p class="mb-0 small text-muted">
+                                        NDA_Form.pdf updated
+                                    </p>
+                                    <small class="text-muted">Yesterday</small>
+                                </div>
+                            </li>
+
+                            <li class="activity-item d-flex align-items-start">
+                                <div class="activity-icon bg-danger">
+                                    <i class="fa-solid fa-file-circle-xmark"></i>
+                                </div>
+                                <div class="ms-3">
+                                    <p class="mb-1 fw-semibold">Document Rejected</p>
+                                    <p class="mb-0 small text-muted">
+                                        Invoice_0987.pdf was rejected
+                                    </p>
+                                    <small class="text-muted">2 days ago</small>
+                                </div>
+                            </li>
+
+                        </ul>
                     </div>
                 </div>
             </div>
+
         </div>
 
         <!-- Quick Actions -->
@@ -258,151 +370,55 @@
 @endsection
 
 @push('script')
-    {{-- <script>
-        const documentChartLabels = @json($data['documentChartLabels']);
-        const documentChartData = @json($data['documentChartData']);
-        const revenueChartLabels = @json($data['revenueChartLabels']);
-        const revenueChartData = @json($data['revenueChartData']);
-        $(document).ready(function() {
-            // Initialize Charts
-            initializeCharts();
+    <script>
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb'],
+                datasets: [{
+                    label: 'Revenue ($)',
+                    data: [6500, 7200, 8100, 9000, 8700, 10000],
+                    backgroundColor: '#006a6c',
+                    borderRadius: 6,
+                    barThickness: 35
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return '$' + context.parsed.y.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value;
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    }
+                }
+            }
         });
-
-        function initializeCharts() {
-            // Revenue Chart (Bar Chart)
-            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-            const revenueChart = new Chart(revenueCtx, {
-                type: 'bar',
-                data: {
-                    labels: revenueChartLabels,
-                    datasets: [{
-                        label: 'Monthly Revenue ({{ getDefaultCurrencySymbol() }})',
-                        data: revenueChartData,
-                        backgroundColor: 'rgba(26, 115, 232, 0.7)',
-                        borderColor: 'rgba(26, 115, 232, 1)',
-                        borderWidth: 1,
-                        borderRadius: 0,
-                        borderSkipped: false,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                            titleColor: '#0A2A43',
-                            bodyColor: '#606F7B',
-                            borderColor: '#dee2e6',
-                            borderWidth: 1,
-                            cornerRadius: 8,
-                            padding: 12,
-                            displayColors: false,
-                            callbacks: {
-                                label: function(context) {
-                                    return `{{ getDefaultCurrencySymbol() }}${context.parsed.y.toLocaleString()}`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.05)',
-                                drawBorder: false
-                            },
-                            ticks: {
-                                color: '#606F7B',
-                                callback: function(value) {
-                                    return '{{ getDefaultCurrencySymbol() }}' + value.toLocaleString();
-                                }
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                color: '#606F7B'
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Documents Chart (Line Chart)
-            const documentChartCtx = document.getElementById('documentsChart').getContext('2d');
-            const documentChartInstance = new Chart(documentChartCtx, {
-                type: 'line',
-                data: {
-                    labels: documentChartLabels,
-                    datasets: [{
-                        label: 'Documents Processed',
-                        data: documentChartData,
-                        backgroundColor: 'rgba(232, 182, 0, 0.1)',
-                        borderColor: 'rgba(232, 182, 0, 1)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: 'rgba(232, 182, 0, 1)',
-                        pointBorderColor: '#fff',
-                        pointBorderWidth: 2,
-                        pointRadius: 5,
-                        pointHoverRadius: 7
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                            titleColor: '#0A2A43',
-                            bodyColor: '#606F7B',
-                            borderColor: '#dee2e6',
-                            borderWidth: 1,
-                            cornerRadius: 8,
-                            padding: 12,
-                            displayColors: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.05)',
-                                drawBorder: false
-                            },
-                            ticks: {
-                                color: '#606F7B',
-                                stepSize: 20
-                            }
-                        },
-                        x: {
-                            grid: {
-                                color: 'rgba(0, 0, 0, 0.05)',
-                                drawBorder: false
-                            },
-                            ticks: {
-                                color: '#606F7B'
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Handle window resize for charts
-            $(window).on('resize', function() {
-                revenueChart.resize();
-                documentsChart.resize();
-            });
-        }
-    </script> --}}
+    </script>
 @endpush

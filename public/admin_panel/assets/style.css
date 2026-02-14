@@ -1,5 +1,5 @@
 :root {
-    --primary-blue: #1A73E8;
+    --primary-blue: #006a6c;
     --dark-blue: #0A2A43;
     --accent-yellow: #E8B600;
     --light-gray: #F5F7FA;
@@ -571,8 +571,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary-custom:hover {
-    background-color: #1557b0;
-    border-color: #1557b0;
+    background-color: #005456;
+    border-color: #005456;
     color: white;
 }
 
