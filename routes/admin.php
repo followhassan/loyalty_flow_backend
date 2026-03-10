@@ -75,6 +75,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::post('/update', [UserController::class, 'update'])->name('update');
     });
 
     Route::group(['prefix' => 'agents', 'as' => 'agents.'], function () {

@@ -52,20 +52,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>#M1001</td>
-                            <td>Dhaka Electronics</td>
-                            <td>Dhaka</td>
-                            <td>1,245</td>
-                            <td><span class="badge bg-success">Active</span></td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-info">View</button>
-                                <button class="btn btn-sm btn-warning">Edit</button>
-                                <button class="btn btn-sm btn-danger">Suspend</button>
-                            </td>
-                        </tr>
+                        @foreach ($merchents as $item)
+                            <tr>
+                                <td>#{{ $item->user_id }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>Dhaka</td>
+                                <td>1,245</td>
+                                <td>
+                                    @if ($item->status == 1)
+                                        <span class="badge bg-success">Active</span>
+                                    @else
+                                        <span class="badge bg-danger">Inactive</span>
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-info">View</button>
+                                    <button class="btn btn-sm btn-warning">Edit</button>
+                                    <button class="btn btn-sm btn-danger">Suspend</button>
+                                </td>
+                            </tr>
+                        @endforeach
 
-                        <tr>
+                        {{-- <tr>
                             <td>#M1002</td>
                             <td>Chittagong Fashion House</td>
                             <td>Chittagong</td>
@@ -102,7 +110,7 @@
                                 <button class="btn btn-sm btn-warning">Edit</button>
                                 <button class="btn btn-sm btn-danger">Suspend</button>
                             </td>
-                        </tr>
+                        </tr> --}}
                     </tbody>
                 </table>
             </div>
