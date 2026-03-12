@@ -55,6 +55,14 @@ class AuthController extends Controller
             // Generate JWT token
             $token = JWTAuth::fromUser($user);
 
+             if ($user->user_type == 0) {
+                $userType = 'customer';
+            } elseif ($user->user_type == 1) {
+                $userType = 'Merchant';
+            } elseif ($user->user_type == 2) {
+                $userType = 'Agent';
+            }
+
             $data = [
                 'user'  => [
                     'id'           => $user->id,
@@ -62,7 +70,7 @@ class AuthController extends Controller
                     'name'         => $user->name,
                     'email'        => $user->email,
                     'phone'        => $user->phone,
-                    'user_type'    => $user->user_type,
+                    'user_type'    => $userType,
                     'referral_code'=> $user->referral_code,
                     'role_status'  => $user->role_status,
                     'status'       => $user->status,
