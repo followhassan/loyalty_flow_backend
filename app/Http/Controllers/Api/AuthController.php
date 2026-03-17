@@ -92,6 +92,7 @@ class AuthController extends Controller
     {
         DB::beginTransaction();
 
+
         try {
 
             $request->validate([
@@ -164,7 +165,6 @@ class AuthController extends Controller
                     'address'       => $request->address,
                     'category'      => $request->category,
                     'contact_phone' => $request->phone,
-                    'status'        => 0 // Pending
                 ]);
             }
 

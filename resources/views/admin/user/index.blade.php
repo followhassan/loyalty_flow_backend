@@ -21,7 +21,7 @@
                     <h2 class="page-content-title fw-semibold fs-5">All Users</h2>
                     <p class="page-subtitle">Manage User with wallet ballance and update status</p>
                 </div>
-                <div class="d-flex align-items-center gap-2">
+                {{-- <div class="d-flex align-items-center gap-2">
                     <!-- Export Button -->
                     <button class="btn btn-light text-dark border">
                         <i class="fa-solid fa-download me-1"></i> Export
@@ -31,7 +31,7 @@
                     <button class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addUserModal">
                         <i class="fa-solid fa-plus me-1"></i> Add User
                     </button>
-                </div>
+                </div> --}}
             </div>
         </div>
 
@@ -234,6 +234,63 @@
 
 
 @push('script')
+    <script>
+        $(document).ready(function () {
+            $('#usersTable').DataTable({
+                dom:
+                    "<'row mb-3'<'col-md-6 d-flex align-items-center'B><'col-md-6 d-flex justify-content-end'f>>" +
+                    "<'row'<'col-12'tr>>" +
+                    "<'row mt-3'<'col-md-5'l><'col-md-7 d-flex justify-content-end'p>>",
+
+                buttons: [
+                    {
+                        extend: 'copy',
+                        className: 'btn btn-outline-secondary text-light btn-sm me-1',
+                        exportOptions: {
+                            columns: ':not(:last-child)'
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        className: 'btn btn-outline-success text-light btn-sm me-1',
+                        exportOptions: {
+                            columns: ':not(:last-child)'
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        className: 'btn btn-outline-success text-light btn-sm me-1',
+                        exportOptions: {
+                            columns: ':not(:last-child)'
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        className: 'btn btn-outline-danger text-light btn-sm me-1',
+                        exportOptions: {
+                            columns: ':not(:last-child)'
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        className: 'btn btn-outline-primary text-light btn-sm',
+                        exportOptions: {
+                            columns: ':not(:last-child)'
+                        }
+                    }
+                ],
+
+                lengthMenu: [10, 25, 50, 100],
+                pageLength: 10,
+
+                language: {
+                    search: "",
+                    searchPlaceholder: "🔍 Search users...",
+                    lengthMenu: "Show _MENU_ entries",
+                }
+            });
+        });
+    </script>
     <script>
         $(document).ready(function() {
 

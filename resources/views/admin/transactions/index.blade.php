@@ -80,91 +80,41 @@
                             <th>User</th>
                             <th>Merchant</th>
                             <th>Amount</th>
-                            <th>Cashback</th>
+                            {{-- <th>Cashback</th> --}}
                             <th>Status</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>#TRX1001</td>
-                            <td>
-                                <div>John Doe</div>
-                                <small class="text-muted">john@example.com</small>
-                            </td>
-                            <td>TechZone Electronics</td>
-                            <td>$250.00</td>
-                            <td class="text-success">$12.50</td>
-                            <td><span class="badge bg-success">Completed</span></td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-info">View</button>
-                                <button class="btn btn-sm btn-secondary">Receipt</button>
-                            </td>
-                        </tr>
+                        @foreach($transactions as $trx)
+                            <tr>
+                                <td>#TRX1001</td>
+                                <td>
+                                    <div>{{ $trx->customer->name }}</div>
+                                    <small class="text-muted">{{ $trx->customer->email }}</small>
+                                </td>
+                                <td>
+                                    <div>{{ $trx->merchant->name }}</div>
+                                    <small class="text-muted">{{ $trx->merchant->merchant->business_name }}</small>
+                                </td>
+                                <td>${{ $trx->amount }}</td>
+                                {{-- <td class="text-success">$12.50</td> --}}
+                                <td>
+                                    @if ($trx->status == 1)
+                                        <span class="badge bg-success">Approved</span>
+                                    @elseif ($trx->status == 2)
+                                        <span class="badge bg-danger">Rejected</span>
+                                    @else
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    @endif
 
-                        <tr>
-                            <td>#TRX1002</td>
-                            <td>
-                                <div>Sarah Ahmed</div>
-                                <small class="text-muted">sarah@mail.com</small>
-                            </td>
-                            <td>Fashion Hub</td>
-                            <td>$120.50</td>
-                            <td class="text-success">$6.00</td>
-                            <td><span class="badge bg-warning text-dark">Pending</span></td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-info">View</button>
-                                <button class="btn btn-sm btn-danger">Cancel</button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>#TRX1003</td>
-                            <td>
-                                <div>Michael Smith</div>
-                                <small class="text-muted">michael@gmail.com</small>
-                            </td>
-                            <td>Fresh Mart Grocery</td>
-                            <td>$80.00</td>
-                            <td class="text-success">$4.00</td>
-                            <td><span class="badge bg-danger">Failed</span></td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-info">View</button>
-                                <button class="btn btn-sm btn-warning">Retry</button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>#TRX1004</td>
-                            <td>
-                                <div>Emma Watson</div>
-                                <small class="text-muted">emma@yahoo.com</small>
-                            </td>
-                            <td>Digital World</td>
-                            <td>$980.75</td>
-                            <td class="text-success">$49.00</td>
-                            <td><span class="badge bg-success">Completed</span></td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-info">View</button>
-                                <button class="btn btn-sm btn-secondary">Receipt</button>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>#TRX1005</td>
-                            <td>
-                                <div>Rahim Uddin</div>
-                                <small class="text-muted">rahim@mail.com</small>
-                            </td>
-                            <td>Urban Lifestyle</td>
-                            <td>$320.00</td>
-                            <td class="text-success">$16.00</td>
-                            <td><span class="badge bg-success">Completed</span></td>
-                            <td class="text-center">
-                                <button class="btn btn-sm btn-info">View</button>
-                                <button class="btn btn-sm btn-secondary">Receipt</button>
-                            </td>
-                        </tr>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-info">View</button>
+                                    <button class="btn btn-sm btn-secondary">Receipt</button>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>

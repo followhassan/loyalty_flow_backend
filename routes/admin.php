@@ -80,10 +80,20 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
     Route::group(['prefix' => 'agents', 'as' => 'agents.'], function () {
         Route::get('/', [AgentController::class, 'index'])->name('index');
+        Route::post('/store', [AgentController::class, 'storeAgent'])->name('store');
+        Route::get('/view/{id}', [AgentController::class, 'show'])->name('show');
+        Route::post('/update', [AgentController::class, 'update'])->name('update');
+        Route::get('/{id}/toggle-status', [AgentController::class, 'toggleStatus'])->name('toggleStatus');
+
+
+
     });
 
     Route::group(['prefix' => 'merchants', 'as' => 'merchants.'], function () {
         Route::get('/', [MerchantController::class, 'index'])->name('index');
+        Route::get('/view/{id}', [MerchantController::class, 'show'])->name('show');
+        Route::post('/update', [MerchantController::class, 'update'])->name('update');
+        Route::get('/{id}/toggle-status', [MerchantController::class, 'toggleStatus'])->name('toggleStatus');
     });
 
 
