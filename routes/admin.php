@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\TransactionController;
 Use App\Http\Controllers\Admin\PromotionController;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,18 @@ Use App\Http\Controllers\Admin\PromotionController;
 
 
 //====================Admin Authentication=========================
+Route::get('/test-mail', function () {
+    try {
+        Mail::raw('Test email from Laravel', function ($message) {
+            $message->to('shuvo.bg7@gmail.com')
+                    ->subject('Test Mail');
+        });
+
+        return 'Mail sent successfully';
+    } catch (\Exception $e) {
+        return $e->getMessage();
+    }
+});
 
 Route::get('admin/login', [AdminLoginController::class, 'showLoginForm'])->name('login.admin');
 Route::post('admin/login', [AdminLoginController::class, 'login'])->name('admin.login');
