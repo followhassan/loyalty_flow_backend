@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Merchant;
 
 use App\Http\Controllers\Controller;
 use App\Models\Merchant;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -154,6 +155,56 @@ class ProfileController extends Controller
 
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
+
+
+    public function dashboard()
+    {
+        try {
+
+            $user = Auth::user();
+
+            if (!$user) {
+                return $this->errorResponse('Unauthorized', 401);
+            }
+
+            // Only merchant allowed
+            if ($user->user_type != 1) {
+                return $this->errorResponse('Only merchant can access dashboard', 403);
+            }
+
+            // Total transactions
+            $totalTransactions = Transaction::where('merchant_id', $user->id)->count();
+
+            // Approved transactions
+            $approvedTransactions = Transaction::where('merchant_id', $user->id)
+                ->where('status', 1)
+                ->count();
+
+            // Pending transactions
+            $pendingTransactions = Transaction::where('merchant_id', $user->id)
+                ->where('status', 0)
+                ->count();
+
+            // Total unique customers
+            $totalCustomers = Transaction::where('merchant_id', $user->id)
+                ->distinct('customer_id')
+                ->count('customer_id');
+
+            $data = [
+                'total_customers'       => $totalCustomers,
+                'total_transactions'   => $totalTransactions,
+                'approved_transactions'=> $approvedTransactions,
+                'pending_transactions' => $pendingTransactions,
+            ];
+
+            return $this->successResponse($data, 'Dashboard data fetched successfully', 200);
+
+        } catch (\Exception $e) {
+
+            return $this->errorResponse($e->getMessage(), 500);
+
         }
     }
 }

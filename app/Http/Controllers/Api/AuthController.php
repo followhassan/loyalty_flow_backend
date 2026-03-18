@@ -235,6 +235,143 @@ class AuthController extends Controller
         }
     }
 
+
+    public function resendOtp(Request $request)
+    {
+        try {
+
+            $request->validate([
+                'email' => 'required|email'
+            ]);
+
+            $user = User::where('email', $request->email)->first();
+
+            if (!$user) {
+                return $this->errorResponse('User not found', 404);
+            }
+
+            // Optional: prevent resend if already verified
+            if ($user->is_verified == 1) {
+                return $this->errorResponse('User already verified', 400);
+            }
+
+            // Generate new OTP
+            $otp = rand(100000, 999999);
+
+            // Update user OTP
+            $user->verification_code = $otp;
+            $user->save();
+
+            // Send email
+            try {
+                Mail::to($user->email)->send(new MerchantOtpMail($otp, $user->name));
+            } catch (\Exception $e) {
+                Log::error('Resend OTP mail failed: '.$e->getMessage());
+            }
+
+            return $this->successResponse(null, 'OTP resent successfully', 200);
+
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
+
+
+    public function forgotPassword(Request $request)
+    {
+        try {
+
+            $request->validate([
+                'email' => 'required|email'
+            ]);
+
+            $user = User::where('email', $request->email)->first();
+
+            if (!$user) {
+                return $this->errorResponse('User not found', 404);
+            }
+
+            $otp = rand(100000, 999999);
+
+            $user->verification_code = $otp;
+            $user->save();
+
+            try {
+                Mail::to($user->email)->send(new MerchantOtpMail($otp, $user->name));
+            } catch (\Exception $e) {
+                Log::error('Forgot password OTP mail failed: '.$e->getMessage());
+            }
+
+            return $this->successResponse(null, 'OTP sent to your email', 200);
+
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
+    public function verifyForgetPasswordOtp(Request $request)
+    {
+        try {
+
+            $request->validate([
+                'email' => 'required|email',
+                'otp'   => 'required'
+            ]);
+
+            $user = User::where('email', $request->email)
+                        ->where('verification_code', $request->otp)
+                        ->first();
+
+            if (!$user) {
+                return $this->errorResponse('Invalid OTP', 400);
+            }
+
+            $user->is_verified = 1;
+            $user->verification_code = null;
+            $user->email_verified_at = now();
+
+
+            if ($user->user_type == 0) {
+                $user->status = 1;
+            }
+            $user->save();
+
+            return $this->successResponse(null, 'OTP verified successfully', 200);
+
+        } catch (\Exception $e) {
+
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
+
+    public function resetPassword(Request $request)
+    {
+        try {
+
+            $request->validate([
+                'email'    => 'required|email',
+                'otp'      => 'required',
+                'password' => 'required|min:6|confirmed'
+            ]);
+
+            $user = User::where('email', $request->email)
+                        ->where('verification_code', $request->otp)
+                        ->first();
+
+            if (!$user) {
+                return $this->errorResponse('Invalid OTP', 400);
+            }
+
+            $user->password = Hash::make($request->password);
+            $user->verification_code = null; // clear OTP
+            $user->save();
+
+            return $this->successResponse(null, 'Password reset successfully', 200);
+
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
+
     public function profile(Request $request)
     {
         try {
