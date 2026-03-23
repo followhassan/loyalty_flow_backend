@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Agent\DashboardController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\Customer\CustomerProfileController;
 use App\Http\Controllers\Api\Customer\TransactionController as CustomerTransactionController;
@@ -20,6 +21,7 @@ Route::prefix('auth')->group(function () {
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
     Route::post('/verify-forget-password-otp', [AuthController::class, 'verifyForgetPasswordOtp']);
 
+
     // Route::post('/merchant/register', [MerchantAuthController::class, 'register']);
     Route::post('login',    [AuthController::class, 'login']);
 
@@ -39,7 +41,11 @@ Route::prefix('auth')->group(function () {
         Route::post('/customer/profile/update', [CustomerProfileController::class, 'updateProfile']);
         Route::post('/customer/transaction/submit', [TransactionController::class, 'submitTransaction']);
         Route::get('/customer/my-transaction', [CustomerTransactionController::class, 'myTransactions']);
+
+        Route::get('/agent/dashboard', [DashboardController::class, 'dashboard']);
+        Route::get('/agent/referral', [DashboardController::class, 'referral']);
     });
 });
+
 
 Route::post('/qr/scan', [QrController::class, 'scanQr']);

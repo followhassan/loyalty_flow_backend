@@ -133,8 +133,8 @@ class AuthController extends Controller
             $userId = $prefix . $number;
 
             $referrerId = null;
-            if ($request->filled('referral_code')) {
-                $referrer = User::where('referral_code', $request->referral_code)->first();
+            if ($request->filled('ref')) {
+                $referrer = User::where('referral_code', $request->ref)->first();
                 if ($referrer) {
                     $referrerId = $referrer->id;
                 }
@@ -161,6 +161,7 @@ class AuthController extends Controller
             if ($request->user_type == 1) { // Merchant
                 Merchant::create([
                     'user_id'       => $user->id,
+                    'agent_id'      => $referrerId,
                     'business_name' => $request->business_name,
                     'address'       => $request->address,
                     'category'      => $request->category,
@@ -437,5 +438,28 @@ class AuthController extends Controller
         } while(User::where('referral_code', $code)->exists());
 
         return $code;
+    }
+
+
+    public function logout(Request $request)
+    {
+        try {
+
+            $user = Auth::user();
+
+            if (!$user) {
+                return $this->errorResponse('Unauthorized', 401);
+            }
+
+            // Invalidate JWT token
+            auth('api')->logout();
+
+            return $this->successResponse(null, 'Logged out successfully', 200);
+
+        } catch (\Exception $e) {
+
+            return $this->errorResponse($e->getMessage(), 500);
+
+        }
     }
 }
