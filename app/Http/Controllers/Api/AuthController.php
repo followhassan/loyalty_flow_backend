@@ -49,7 +49,7 @@ class AuthController extends Controller
 
             // Account active check
             if ($user->status == 0) {
-                return $this->errorResponse('Account is pending approval by admin.', 403);
+                return $this->errorResponse('Account is pending need to approval by admin.', 403);
             }
 
             // Generate JWT token
@@ -460,6 +460,32 @@ class AuthController extends Controller
 
             return $this->errorResponse($e->getMessage(), 500);
 
+        }
+    }
+
+    public function refresh()
+    {
+        try {
+
+            // Get current token
+            $oldToken = JWTAuth::getToken();
+
+            if (!$oldToken) {
+                return $this->errorResponse('Token not provided', 401);
+            }
+
+            // Refresh token
+            $newToken = JWTAuth::refresh($oldToken);
+
+            return $this->successResponse([
+                'access_token' => $newToken,
+                'token_type'   => 'bearer',
+                'expires_in'   => auth('api')->factory()->getTTL() * 60
+            ], 'Token refreshed successfully', 200);
+
+        } catch (\Exception $e) {
+
+            return $this->errorResponse($e->getMessage(), 500);
         }
     }
 }

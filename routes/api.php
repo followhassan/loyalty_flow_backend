@@ -20,6 +20,7 @@ Route::prefix('auth')->group(function () {
     Route::post('/forget-password', [AuthController::class, 'forgotPassword']);
     Route::post('/reset-password', [AuthController::class, 'resetPassword']);
     Route::post('/verify-forget-password-otp', [AuthController::class, 'verifyForgetPasswordOtp']);
+    Route::post('/refresh-token', [AuthController::class, 'refresh']);
 
 
     // Route::post('/merchant/register', [MerchantAuthController::class, 'register']);
