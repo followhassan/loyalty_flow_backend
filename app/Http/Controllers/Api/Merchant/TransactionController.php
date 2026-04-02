@@ -71,7 +71,7 @@ class TransactionController extends Controller
                 return $this->errorResponse('Transaction not found', 404);
             }
 
-            if ($transaction->status == 0 || $transaction->status == 1) {
+            if ($transaction->status == 0 && $transaction->status == 1) {
                 return $this->errorResponse('Already processed', 400);
             }
 
@@ -103,7 +103,7 @@ class TransactionController extends Controller
                 return $this->errorResponse('Transaction not found', 404);
             }
 
-            if ($transaction->status != 0) {
+            if ($transaction->status != 0 && $transaction->status != 1) {
                 return $this->errorResponse('Already processed', 400);
             }
 

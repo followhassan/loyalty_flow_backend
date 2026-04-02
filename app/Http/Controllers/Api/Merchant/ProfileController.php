@@ -202,7 +202,6 @@ class ProfileController extends Controller
             return $this->successResponse($data, 'Dashboard data fetched successfully', 200);
 
         } catch (\Exception $e) {
-
             return $this->errorResponse($e->getMessage(), 500);
 
         }
