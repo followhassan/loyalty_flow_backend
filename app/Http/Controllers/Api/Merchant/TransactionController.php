@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api\Merchant;
 
 use App\Http\Controllers\Controller;
+use App\Models\CashbackHistory;
+use App\Models\CashbackSetup;
 use App\Models\Transaction;
+use App\Models\User;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -75,8 +78,37 @@ class TransactionController extends Controller
                 return $this->errorResponse('Already processed', 400);
             }
 
+            $cashbackSetup = CashbackSetup::where('cashback_type', 'payment_cashback')
+                ->where('status', 1)
+                ->first();
+
+            if (!$cashbackSetup) {
+                return $this->errorResponse('Cashback setup not found', 500);
+            }
+
+            $amount = $transaction->amount;
+
+            // 🔥 Calculate cashback
+            $cashbackAmount = ($amount * $cashbackSetup->percentage) / 100;
+
             $transaction->status = 1;
             $transaction->save();
+
+            $customer = User::find($transaction->customer_id);
+
+            if ($customer) {
+                $customer->total_balance += $cashbackAmount;
+                $customer->save();
+            }
+
+
+            CashbackHistory::create([
+                'user_id'        => $customer->id,
+                'transaction_id' => $transaction->id,
+                'cashback_type'  => 'payment_cashback',
+                'percentage'     => $cashbackSetup->percentage,
+                'amount'         => $cashbackAmount,
+            ]);
 
             return $this->successResponse($transaction, 'Approved', 200);
 
@@ -85,7 +117,7 @@ class TransactionController extends Controller
         }
     }
 
-    public function rejectTransaction($id)
+    public function rejectTransaction(Request $request, $id)
     {
         try {
 
@@ -108,6 +140,7 @@ class TransactionController extends Controller
             }
 
             $transaction->status = 2;
+            $transaction->rejection_reason = $request->reject_reason;
             $transaction->save();
 
             return $this->successResponse($transaction, 'Rejected', 200);

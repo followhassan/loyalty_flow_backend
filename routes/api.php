@@ -45,6 +45,11 @@ Route::prefix('auth')->group(function () {
 
         Route::get('/agent/dashboard', [DashboardController::class, 'dashboard']);
         Route::get('/agent/referral', [DashboardController::class, 'referral']);
+
+
+        Route::post('/role/switch', [AuthController::class, 'switchRole']);
+        Route::post('/apply/merchant', [AuthController::class, 'applyMerchant']);
+
     });
 });
 

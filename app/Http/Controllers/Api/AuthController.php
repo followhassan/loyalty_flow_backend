@@ -440,6 +440,137 @@ class AuthController extends Controller
         return $code;
     }
 
+    public function switchRole(Request $request)
+    {
+        try {
+
+            $userData = Auth::user();
+
+            $user = User::find($userData->id);
+
+            if (!$user) {
+                return $this->errorResponse('Unauthorized', 401);
+            }
+
+            $request->validate([
+                'user_type' => 'required|in:0,1,2'
+            ]);
+
+            $targetRole = $request->user_type;         
+
+            // 🔥 Switch to Merchant
+            if ($targetRole == 1) {
+                $merchant = Merchant::where('user_id', $user->id)->first();
+
+                // ❗ If NOT exists → create basic merchant
+                if (!$merchant) {
+
+                    Merchant::create([
+                        'user_id'       => $user->id,
+                        'business_name' => '',
+                        'address'       => '',
+                        'category'      => '',
+                        'contact_phone' => $user->phone,
+                        'agent_id'      => null,
+                    ]);
+
+                    // ✅ Switch role
+                    $user->user_type = 1;
+                    $user->save();
+
+                    return $this->successResponse(null, 'Merchant profile created. Please complete business details and wait for admin approval.', 200);
+                }
+
+                // Optional: check approval
+                if (isset($merchant->status) && $merchant->status != 1) {
+                    return $this->errorResponse('Merchant not approved yet', 403);
+                }
+            }
+
+            // 🔥 Switch to Agent
+            if ($targetRole == 2) {
+
+                $agent = Agent::where('user_id', $user->id)->first();
+
+                // Auto create agent if not exists (optional)
+                if (!$agent) {
+
+                    Agent::create([
+                        'user_id'       => $user->id,
+                        'referral_code' => $user->referral_code
+                    ]);
+
+                    // ✅ Switch role
+                    $user->user_type = 2;
+                    $user->save();
+
+                    return $this->successResponse(null, 'Agent profile created. You can now switch after setup.', 200);
+                }
+            }
+
+            if($targetRole == 0) {
+                // Optional: Add any checks before switching back to customer
+                $user->user_type = 0;
+                $user->save();
+            }
+
+           
+
+            return $this->successResponse([
+                'user_details' => $user,
+                'user_type' => $user->user_type
+            ], 'Role switched successfully', 200);
+
+        } catch (\Exception $e) {
+
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
+
+    public function applyMerchant(Request $request)
+    {
+        try {
+
+            $user = Auth::user();
+
+            if (!$user) {
+                return $this->errorResponse('Unauthorized', 401);
+            }
+
+            $request->validate([
+                'business_name' => 'required|string|max:255',
+                'address'       => 'required|string|max:255',
+                'category'      => 'required|string|max:100',
+                'contact_phone' => 'required|string|max:20',
+            ]);
+
+            // Already exists?
+            $exists = Merchant::where('user_id', $user->id)->first();
+
+            if ($exists) {
+
+                $exists->business_name = $request->business_name;
+                $exists->address       = $request->address;
+                $exists->category      = $request->category;
+                $exists->contact_phone = $request->contact_phone;                
+                $exists->save();
+
+            }else{
+
+                return $this->errorResponse('Merchant profile not found.', 400);
+            }
+
+
+            $user ->status = 0; // switch to merchant role
+            $user->save();
+
+            return $this->successResponse(null, 'Merchant application submitted. Wait for admin approval.', 200);
+
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
+
 
     public function logout(Request $request)
     {

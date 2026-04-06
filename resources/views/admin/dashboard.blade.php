@@ -170,19 +170,19 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="flex-grow-1">
                             <p class="text-uppercase text-muted small fw-semibold mb-2">
-                                Total Revenue
+                                Total Transaction
                             </p>
 
                             <p class="stats-value mb-1">
-                                $10,000
+                                $ {{ number_format($data['totalTransactions'], 2) }}
                             </p>
 
                             <!-- Trend -->
-                            <p class="mb-0 small text-success fw-semibold">
+                            {{-- <p class="mb-0 small text-success fw-semibold">
                                 <i class="fa-solid fa-arrow-trend-up me-1"></i>
                                 12.5% increase
                             </p>
-                            <small class="text-mute">vs last month</small>
+                            <small class="text-mute">vs last month</small> --}}
                         </div>
 
                         <div class="stats-icon-container" style="background-color: rgba(26, 115, 232, 0.1);">
@@ -202,15 +202,15 @@
                             </p>
 
                             <p class="stats-value mb-1">
-                                1045
+                                {{ $data['totalCustomers'] }}
                             </p>
 
                             <!-- Trend -->
-                            <p class="mb-0 small text-success fw-semibold">
+                            {{-- <p class="mb-0 small text-success fw-semibold">
                                 <i class="fa-solid fa-arrow-trend-up me-1"></i>
                                 8.2% increase
                             </p>
-                            <small class="text-mute">vs last month</small>
+                            <small class="text-mute">vs last month</small> --}}
                         </div>
 
                         <div class="stats-icon-container" style="background-color: rgba(26, 115, 232, 0.1);">
@@ -225,23 +225,23 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="flex-grow-1">
                             <p class="text-uppercase text-muted small fw-semibold mb-2">
-                                Total Order
+                                Active Merchant
                             </p>
 
                             <p class="stats-value mb-1">
-                                1154
+                                {{ $data['totalMerchants'] }}
                             </p>
 
                             <!-- Trend -->
-                            <p class="mb-0 small text-success fw-semibold">
+                            {{-- <p class="mb-0 small text-success fw-semibold">
                                 <i class="fa-solid fa-arrow-trend-down me-1"></i>
                                 8.2% increase
                             </p>
-                            <small class="text-mute">vs last month</small>
+                            <small class="text-mute">vs last month</small> --}}
                         </div>
 
                         <div class="stats-icon-container" style="background-color: rgba(26, 115, 232, 0.1);">
-                            <i class="fa-solid fa-bag-shopping fa-2x"></i>
+                            <i class="fa-solid fa-user-group fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -252,23 +252,23 @@
                     <div class="d-flex justify-content-between align-items-start">
                         <div class="flex-grow-1">
                             <p class="text-uppercase text-muted small fw-semibold mb-2">
-                                Growth Rate
+                                Active Agent
                             </p>
 
                             <p class="stats-value mb-1">
-                                28%
+                                {{ $data['totalAgents'] }}
                             </p>
 
                             <!-- Trend -->
-                            <p class="mb-0 small text-success fw-semibold">
+                            {{-- <p class="mb-0 small text-success fw-semibold">
                                 <i class="fa-solid fa-arrow-trend-up me-1"></i>
                                 2.8% increase
                             </p>
-                            <small class="text-mute">vs last month</small>
+                            <small class="text-mute">vs last month</small> --}}
                         </div>
 
                         <div class="stats-icon-container" style="background-color: rgba(26, 115, 232, 0.1);">
-                            <i class="fa-solid fa-arrow-trend-up fa-2x"></i>
+                            <i class="fa-solid fa-user-group fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -280,7 +280,7 @@
             <div class="col-lg-6">
                 <div class="chart-card">
                     <div class="p-4 border-bottom">
-                        <h5 class="mb-1">User Growth</h5>
+                        <h5 class="mb-1">Transaction Growth</h5>
                         <p class="text-muted mb-0 small">Last 6 months</p>
                     </div>
                     <div class="p-4">
@@ -294,66 +294,46 @@
             <div class="col-lg-6">
                 <div class="chart-card">
                     <div class="p-4 border-bottom">
-                        <h5 class="mb-1">Recent Activity</h5>
+                        <h5 class="mb-1">Recent Transactions</h5>
                         <p class="text-muted mb-0 small">Last 7 days</p>
                     </div>
 
-                    <div class="p-4">
-                        <ul class="activity-list list-unstyled mb-0">
+                    <div class="transaction-list p-2">
+                        @forelse($data['recentTransactions'] as $transaction)
+                            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                                <div>
+                                    <h6 class="mb-0">
+                                        #{{ $transaction->id }}
+                                    </h6>
+                                    <small>
+                                        Customer: {{ $transaction->customer->name ?? 'N/A' }} | Merchant: {{ $transaction->merchant->name ?? 'N/A' }}
+                                    </small>
+                                    <small class="text-muted">
+                                        {{ $transaction->created_at->format('d M Y, h:i A') }}
+                                    </small>
+                                </div>
 
-                            <li class="activity-item d-flex align-items-start">
-                                <div class="activity-icon bg-success">
-                                    <i class="fa-solid fa-file-circle-check"></i>
-                                </div>
-                                <div class="ms-3">
-                                    <p class="mb-1 fw-semibold">Document Approved</p>
-                                    <p class="mb-0 small text-muted">
-                                        Invoice_1023.pdf was approved
-                                    </p>
-                                    <small class="text-muted">2 hours ago</small>
-                                </div>
-                            </li>
+                                <div class="text-end">
+                                    <h6 class="mb-0 text-success">
+                                        ${{ number_format($transaction->amount, 2) }}
+                                    </h6>
+                                    <small class="text-muted">
+                                        @if ($transaction->status == 1)
+                                            <span class="badge bg-success">Approved</span>
+                                        @elseif ($transaction->status == 2)
+                                            <span class="badge bg-danger">Rejected</span>
+                                        @else
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        @endif
 
-                            <li class="activity-item d-flex align-items-start">
-                                <div class="activity-icon bg-primary">
-                                    <i class="fa-solid fa-file-arrow-up"></i>
+                                    </small>
                                 </div>
-                                <div class="ms-3">
-                                    <p class="mb-1 fw-semibold">New Document Uploaded</p>
-                                    <p class="mb-0 small text-muted">
-                                        Contract_Agreement.docx uploaded
-                                    </p>
-                                    <small class="text-muted">5 hours ago</small>
-                                </div>
-                            </li>
-
-                            <li class="activity-item d-flex align-items-start">
-                                <div class="activity-icon bg-warning">
-                                    <i class="fa-solid fa-file-pen"></i>
-                                </div>
-                                <div class="ms-3">
-                                    <p class="mb-1 fw-semibold">Document Updated</p>
-                                    <p class="mb-0 small text-muted">
-                                        NDA_Form.pdf updated
-                                    </p>
-                                    <small class="text-muted">Yesterday</small>
-                                </div>
-                            </li>
-
-                            <li class="activity-item d-flex align-items-start">
-                                <div class="activity-icon bg-danger">
-                                    <i class="fa-solid fa-file-circle-xmark"></i>
-                                </div>
-                                <div class="ms-3">
-                                    <p class="mb-1 fw-semibold">Document Rejected</p>
-                                    <p class="mb-0 small text-muted">
-                                        Invoice_0987.pdf was rejected
-                                    </p>
-                                    <small class="text-muted">2 days ago</small>
-                                </div>
-                            </li>
-
-                        </ul>
+                            </div>
+                        @empty
+                            <div class="text-center text-muted">
+                                No recent transactions found
+                            </div>
+                        @endforelse
                     </div>
                 </div>
             </div>
@@ -361,16 +341,64 @@
         </div>
 
         <!-- Quick Actions -->
-        <div class="row quick-actions mb-2">
+        {{-- <div class="row quick-actions mb-2">
             <div class="col-12">
                 <h2 class="h4 fw-bold mb-2">Quick Actions</h2>
             </div>
-        </div>
+        </div> --}}
     </main>
 @endsection
 
 @push('script')
     <script>
+        const labels = @json($data['labels']);
+        const data = @json($data['values']);
+
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Revenue',
+                    data: data,
+                    backgroundColor: '#006a6c',
+                    borderRadius: 6,
+                    barThickness: 35
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return value.toLocaleString();
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0,0,0,0.05)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+    {{-- <script>
         const ctx = document.getElementById('revenueChart').getContext('2d');
 
         new Chart(ctx, {
@@ -420,5 +448,5 @@
                 }
             }
         });
-    </script>
+    </script> --}}
 @endpush
