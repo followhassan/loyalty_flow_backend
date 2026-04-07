@@ -119,9 +119,12 @@ class AuthController extends Controller
                 $prefix = 'A';
             }
 
-            $lastUser = User::where('user_type', $request->user_type)
-            ->orderBy('id', 'desc')
-            ->first();
+            $lastUser = User::where('user_id', 'like', $prefix . '%')
+                ->orderBy('id', 'desc')
+                ->first();
+            // $lastUser = User::where('user_type', $request->user_type)
+            // ->orderBy('id', 'desc')
+            // ->first();
 
             if ($lastUser && $lastUser->user_id) {
                 $number = (int) substr($lastUser->user_id, 1);
@@ -456,7 +459,7 @@ class AuthController extends Controller
                 'user_type' => 'required|in:0,1,2'
             ]);
 
-            $targetRole = $request->user_type;         
+            $targetRole = $request->user_type;
 
             // 🔥 Switch to Merchant
             if ($targetRole == 1) {
@@ -514,7 +517,7 @@ class AuthController extends Controller
                 $user->save();
             }
 
-           
+
 
             return $this->successResponse([
                 'user_details' => $user,
@@ -552,7 +555,7 @@ class AuthController extends Controller
                 $exists->business_name = $request->business_name;
                 $exists->address       = $request->address;
                 $exists->category      = $request->category;
-                $exists->contact_phone = $request->contact_phone;                
+                $exists->contact_phone = $request->contact_phone;
                 $exists->save();
 
             }else{

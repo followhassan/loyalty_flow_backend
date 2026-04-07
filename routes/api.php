@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Merchant\ProfileController;
 use App\Http\Controllers\Api\Merchant\TransactionController as MerchantTransactionController;
 use App\Http\Controllers\Api\QrController;
 use App\Http\Controllers\Api\TransactionController;
+use App\Http\Controllers\Api\UserDashboardController;
 // use App\Http\Controllers\Api\MerchantAuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,7 @@ Route::prefix('auth')->group(function () {
         Route::get('/merchant/transaction/reject/{id}', [MerchantTransactionController::class, 'rejectTransaction']);
 
 
+        Route::get('/customer/dashboard', [UserDashboardController::class, 'dashboard']);
         Route::post('/customer/profile/update', [CustomerProfileController::class, 'updateProfile']);
         Route::post('/customer/transaction/submit', [TransactionController::class, 'submitTransaction']);
         Route::get('/customer/my-transaction', [CustomerTransactionController::class, 'myTransactions']);
