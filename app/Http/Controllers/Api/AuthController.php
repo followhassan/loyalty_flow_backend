@@ -482,6 +482,9 @@ class AuthController extends Controller
                     $user->save();
 
                     return $this->successResponse(null, 'Merchant profile created. Please complete business details and wait for admin approval.', 200);
+                }else{
+                    $user->user_type = 1;
+                    $user->save();
                 }
 
                 // Optional: check approval
@@ -508,7 +511,10 @@ class AuthController extends Controller
                     $user->save();
 
                     return $this->successResponse(null, 'Agent profile created. You can now switch after setup.', 200);
-                }
+                }else{
+                    $user->user_type = 2;
+                    $user->save();
+                }                
             }
 
             if($targetRole == 0) {
