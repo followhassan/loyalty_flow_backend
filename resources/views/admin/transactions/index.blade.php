@@ -121,8 +121,47 @@
 
                                 </td>
                                 <td class="text-center">
-                                    <button class="btn btn-sm btn-info">View</button>
-                                    <button class="btn btn-sm btn-secondary">Receipt</button>
+                                    <div class="dropdown">
+                                        <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            Actions
+                                        </button>
+
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <button class="dropdown-item">View</button>
+                                            </li>
+
+                                            <li>
+                                                <button class="dropdown-item">Receipt</button>
+                                            </li>
+
+                                            @if($trx->status == 1 && $trx->cashback)
+                                                <li><hr class="dropdown-divider"></li>
+
+                                                {{-- Mark as Mature --}}
+                                                @if($trx->cashback->status == 0)
+                                                    <li>
+                                                        <a href="{{ route('admin.transactions.cashback.mature', $trx->cashback->id) }}"
+                                                        class="dropdown-item text-warning">
+                                                            Mark as Mature
+                                                        </a>
+                                                    </li>
+                                                @endif
+
+                                                {{-- Mark as Paid --}}
+                                                @if($trx->cashback->status == 1)
+                                                    <li>
+                                                        <a href="{{ route('admin.transactions.cashback.paid', $trx->cashback->id) }}"
+                                                        class="dropdown-item text-success">
+                                                            Mark as Paid
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                            @endif
+                                        </ul>
+                                    </div>
+                                    {{-- <button class="btn btn-sm btn-info">View</button>
+                                    <button class="btn btn-sm btn-secondary">Receipt</button> --}}
                                 </td>
                             </tr>
                         @endforeach

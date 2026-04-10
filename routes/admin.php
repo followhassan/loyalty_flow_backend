@@ -112,6 +112,8 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
 
     Route::group(['prefix' => 'transactions', 'as' => 'transactions.'], function () {
         Route::get('/', [TransactionController::class, 'index'])->name('index');
+        Route::get('/cashback/{id}/mature', [TransactionController::class, 'markMature'])->name('cashback.mature');
+        Route::get('/cashback/{id}/paid', [TransactionController::class, 'markPaid'])->name('cashback.paid');
 
     });
 
