@@ -53,7 +53,7 @@
                     <i class="fa-solid fa-receipt"></i>
                     <span>Transactions</span>
                 </a>
-                <a href="{{route('admin.promotions.index')}}" class="nav-link @yield(section: 'promotions')">
+                {{-- <a href="{{route('admin.promotions.index')}}" class="nav-link @yield(section: 'promotions')">
                     <i class="fas fa-bullhorn"></i>
                     <span>Rules & Promotion</span>
                 </a>
@@ -61,7 +61,7 @@
                 <a href="" class="nav-link @yield(section: 'billing')">
                     <i class="fas fa-bullhorn"></i>
                     <span>Analytic</span>
-                </a>
+                </a> --}}
                 {{-- @if (Auth::user()->can('admin.tenant.view'))
                     <a class="nav-link @yield(section: 'tenants')" href="{{ route('admin.tenant.index') }}">
                         <i class="fas fa-building"></i>
