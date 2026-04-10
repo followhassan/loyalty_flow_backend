@@ -80,4 +80,51 @@ class DashboardController extends Controller
             return $this->errorResponse($e->getMessage(), 500);
         }
     }
+
+
+    public function merchants()
+    {
+        try {
+
+            $agent = Auth::user();
+
+            if (!$agent || $agent->user_type != 2) {
+                return $this->errorResponse('Unauthorized', 403);
+            }
+
+            $merchants = Merchant::where('agent_id', $agent->id)
+                ->with(['user:id,name,email,phone','status'])
+                ->select('id','user_id','business_name','created_at')
+                ->latest()
+                ->get();
+
+            return $this->successResponse($merchants, 'Merchant list fetched', 200);
+
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
+
+    public function growth()
+    {
+        try {
+
+            $agent = Auth::user();
+
+            if (!$agent || $agent->user_type != 2) {
+                return $this->errorResponse('Unauthorized', 403);
+            }
+
+            $data = Merchant::where('agent_id', $agent->id)
+                ->selectRaw('DATE(created_at) as date, COUNT(*) as total')
+                ->groupBy('date')
+                ->orderBy('date', 'ASC')
+                ->get();
+
+            return $this->successResponse($data, 'Growth data', 200);
+
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
 }

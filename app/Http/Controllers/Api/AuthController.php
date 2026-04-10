@@ -597,6 +597,38 @@ class AuthController extends Controller
         }
     }
 
+
+    public function changePassword(Request $request)
+    {
+        try {
+
+            $userData = Auth::user();
+            $user = User::find($userData->id);
+
+            if (!$user) {
+                return $this->errorResponse('Unauthorized', 401);
+            }
+
+            $request->validate([                
+                'new_password'     => 'required|min:6|confirmed',
+            ]);
+
+            // 🔥 Prevent same password reuse
+            if (Hash::check($request->new_password, $user->password)) {
+                return $this->errorResponse('New password cannot be same as old password', 400);
+            }
+
+            // 🔥 Update password
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+
+            return $this->successResponse(null, 'Password changed successfully', 200);
+
+        } catch (\Exception $e) {
+            return $this->errorResponse($e->getMessage(), 500);
+        }
+    }
+
     public function refresh()
     {
         try {

@@ -80,7 +80,7 @@
                             <th>User</th>
                             <th>Merchant</th>
                             <th>Amount</th>
-                            {{-- <th>Cashback</th> --}}
+                            <th>Cashback</th>
                             <th>Status</th>
                             <th class="text-center">Action</th>
                         </tr>
@@ -98,7 +98,18 @@
                                     <small class="text-muted">{{ $trx->merchant->merchant->business_name }}</small>
                                 </td>
                                 <td>${{ $trx->amount }}</td>
-                                {{-- <td class="text-success">$12.50</td> --}}
+                                <td class="text-success">
+                                    @if ($trx->status == 1)
+                                    <span>${{ $trx->cashback->amount ?? '00' }}</span><br>
+                                    <small>
+                                        @if ($trx->cashback)
+                                            {{ $trx->cashback->status == 1 ? 'Matured' : ($trx->cashback->status == 2 ? 'Paid' : 'In Validation') }}
+                                        @else
+                                            No Cashback
+                                        @endif
+                                    </small>
+                                    @endif
+                                </td>
                                 <td>
                                     @if ($trx->status == 1)
                                         <span class="badge bg-success">Approved</span>

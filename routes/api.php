@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Customer\CustomerProfileController;
 use App\Http\Controllers\Api\Customer\TransactionController as CustomerTransactionController;
 use App\Http\Controllers\Api\Merchant\ProfileController;
 use App\Http\Controllers\Api\Merchant\TransactionController as MerchantTransactionController;
+use App\Http\Controllers\Api\MerchentCustomerController;
 use App\Http\Controllers\Api\QrController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UserDashboardController;
@@ -32,12 +33,17 @@ Route::prefix('auth')->group(function () {
         Route::post('refresh', [AuthController::class, 'refresh']);
         Route::get('me',       [AuthController::class, 'profile']);
 
+        Route::post('/change-password', [AuthController::class, 'changePassword']);
+
         Route::get('/merchant/dashboard', [ProfileController::class, 'dashboard']);
         Route::post('/merchant/profile/update', [ProfileController::class, 'updateMerchant']);
         Route::get('/merchant/qr', [ProfileController::class, 'merchantQr']);
         Route::get('/merchant/my-transaction', [MerchantTransactionController::class, 'merchantTransactions']);
         Route::get('/merchant/transaction/approve/{id}', [MerchantTransactionController::class, 'approveTransaction']);
         Route::get('/merchant/transaction/reject/{id}', [MerchantTransactionController::class, 'rejectTransaction']);
+
+        Route::get('/merchant/customer-list', [MerchentCustomerController::class, 'customers']);
+        // Route::get('/merchant/customer-details/{id}', [MerchentCustomerController::class, 'customerDetails']);
 
 
         Route::get('/customer/dashboard', [UserDashboardController::class, 'dashboard']);
@@ -47,6 +53,8 @@ Route::prefix('auth')->group(function () {
 
         Route::get('/agent/dashboard', [DashboardController::class, 'dashboard']);
         Route::get('/agent/referral', [DashboardController::class, 'referral']);
+        Route::get('/agent/merchant-list', [DashboardController::class, 'merchants']);  
+        Route::get('/agent/growth', [DashboardController::class, 'growth']);
 
 
         Route::post('/role/switch', [AuthController::class, 'switchRole']);

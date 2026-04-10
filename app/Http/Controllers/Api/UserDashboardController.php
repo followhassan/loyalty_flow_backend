@@ -38,7 +38,7 @@ class UserDashboardController extends Controller
                 ->sum('amount');
 
             // 🔥 Remaining balance (optional)
-            $remaining = $matured - $paid;
+            $remaining = max(0, $matured - $paid);
 
             $data = [
                 'total_balance'    => (float) $user->total_balance, // from users table
