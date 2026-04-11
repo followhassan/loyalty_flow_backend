@@ -67,7 +67,12 @@
                                     </small>
                                 </td>
                                 <td>{{ $item->merchant->address ?? '' }}</td>
-                                <td>1,245</td>
+                                <td>
+                                    {{ $item->merchant_transactions_count }} Transactions <br>
+                                    <small class="text-muted">
+                                        ${{ $item->merchant_transactions_sum_amount ?? 0 }}
+                                    </small>
+                                </td>
                                 <td>
                                     @if ($item->status == 1)
                                         <span class="badge bg-success">Active</span>
@@ -76,7 +81,70 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    <button class="btn btn-sm btn-info viewBtn"
+                                     <div class="dropdown">
+                                        <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                            Actions
+                                        </button>
+
+                                        <ul class="dropdown-menu">
+
+                                            {{-- View --}}
+                                            <li>
+                                                <button class="dropdown-item viewBtn"
+                                                    data-id="{{ $item->id }}"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#viewModal">
+                                                    View
+                                                </button>
+                                            </li>
+
+                                            {{-- Edit --}}
+                                            <li>
+                                                <button class="dropdown-item editBtn"
+                                                    data-id="{{ $item->id }}"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editModal">
+                                                    Edit
+                                                </button>
+                                            </li>
+
+                                            {{-- 🔥 Merchant Transactions --}}
+                                            <li>
+                                                <a href="{{ route('admin.merchants.customers', $item->id) }}" class="dropdown-item">
+                                                    Customers
+                                                </a>
+                                            </li>
+                                            {{-- <li>
+                                                <a href="{{ route('admin.merchant.transactions', $item->id) }}"
+                                                class="dropdown-item">
+                                                    Transactions
+                                                </a>
+                                            </li> --}}
+
+                                            <li><hr class="dropdown-divider"></li>
+
+                                            {{-- Status Toggle --}}
+                                            @if($item->status == 1)
+                                                <li>
+                                                    <a href="{{ route('admin.merchants.toggleStatus', $item->id) }}"
+                                                    class="dropdown-item text-danger"
+                                                    onclick="return confirm('Suspend this merchant?')">
+                                                        Suspend
+                                                    </a>
+                                                </li>
+                                            @else
+                                                <li>
+                                                    <a href="{{ route('admin.merchants.toggleStatus', $item->id) }}"
+                                                    class="dropdown-item text-success"
+                                                    onclick="return confirm('Activate this merchant?')">
+                                                        Activate
+                                                    </a>
+                                                </li>
+                                            @endif
+
+                                        </ul>
+                                    </div>
+                                    {{-- <button class="btn btn-sm btn-info viewBtn"
                                         data-id="{{ $item->id }}"
                                         data-bs-toggle="modal"
                                         data-bs-target="#viewModal">
@@ -98,7 +166,7 @@
                                         class="btn btn-sm btn-success">
                                         Activate
                                         </a>
-                                    @endif
+                                    @endif --}}
                                     {{-- <button class="btn btn-sm btn-danger">Suspend</button> --}}
                                 </td>
                             </tr>

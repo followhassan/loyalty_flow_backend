@@ -1,5 +1,5 @@
 @extends('admin.layouts.master')
-@section('users', 'active')
+@section('merchants', 'active')
 @section('title'){{ $title ?? '' }} @endsection
 
 @push('style')
@@ -58,7 +58,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($users as $item)
+                        @foreach ($customers as $item)
                             <tr>
                                 <td>#{{ $item->user_id }}</td>
                                 <td>{{ $item->name }}</td>

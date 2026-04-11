@@ -73,4 +73,13 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(CashbackHistory::class, 'user_id');
     }
 
+    public function merchantTransactions()
+    {
+        return $this->hasMany(Transaction::class, 'merchant_id');
+    }
+    public function merchants()
+    {
+        return $this->hasMany(User::class, 'referred_by'); // assuming agent_id in users table
+    }
+
 }

@@ -18,14 +18,14 @@
         <div class="page-header">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
                 <div class="mb-3 mb-md-0 w">
-                    <h2 class="page-content-title fw-semibold fs-5">Agents</h2>
-                    {{-- <p class="page-subtitle">Manage your SaaS users and subscriptions</p> --}}
+                    <h2 class="page-content-title fw-semibold fs-5">Merchents</h2>
+                    <p class="page-subtitle">Manage and monitor all register merchent account</p>
                 </div>
-                <div class="d-flex align-items-center gap-2">
-                    <button class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addAgentModal">
-                        <i class="fa-solid fa-plus me-1"></i> Add Agent
+                {{-- <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                        <i class="fa-solid fa-plus me-1"></i> Export
                     </button>
-                </div>
+                </div> --}}
             </div>
         </div>
 
@@ -34,39 +34,54 @@
             <!-- Card Header -->
             <div
                 class="card-header d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
-                <h5 class="card-title">Agent Overview</h5>
+                <h5 class="card-title">Merchents Overview</h5>
             </div>
 
             <!-- Table -->
             <div class="table-container">
-                <table id="usersTable" class="data-table table table-hover" style="width:100%">
+                <table id="merchentsTable" class="data-table table table-hover" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Agent ID</th>
-                            <th>Agent Name</th>
+                            <th>Merchents ID</th>
+                            <th>Merchent  Details</th>
                             {{-- <th>Country</th> --}}
-                            <th>Total Merchants</th>
-                            {{-- <th>Commission Earnd</th> --}}
+                            <th>Address</th>
+                            <th>Total Transcations</th>
                             <th>Status</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($agents as $agent)
+                        @foreach ($merchants as $item)
                             <tr>
-                                <td>#{{ $agent->user_id }}</td>
-                                <td>{{ $agent->name }}</td>
-                                <td>{{ $agent->merchants_count }}</td>
-                                {{-- <td>$3,450.00</td> --}}
+                                <td>#{{ $item->user_id }}</td>
                                 <td>
-                                    @if ($agent->status == 1)
+                                    <div class="fw-semibold">{{ $item->name }}</div>
+
+                                    <small class="text-muted d-block">
+                                        {{ $item->merchant->business_name ?? 'No Shop Name' }}
+                                    </small>
+
+                                    <small class="text-muted">
+                                        {{ $item->email }}
+                                    </small>
+                                </td>
+                                <td>{{ $item->merchant->address ?? '' }}</td>
+                                <td>
+                                    {{ $item->merchant_transactions_count }} Transactions <br>
+                                    <small class="text-muted">
+                                        ${{ $item->merchant_transactions_sum_amount ?? 0 }}
+                                    </small>
+                                </td>
+                                <td>
+                                    @if ($item->status == 1)
                                         <span class="badge bg-success">Active</span>
                                     @else
                                         <span class="badge bg-danger">Inactive</span>
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    <div class="dropdown">
+                                     <div class="dropdown">
                                         <button class="btn btn-sm btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                                             Actions
                                         </button>
@@ -76,7 +91,7 @@
                                             {{-- View --}}
                                             <li>
                                                 <button class="dropdown-item viewBtn"
-                                                    data-id="{{ $agent->id }}"
+                                                    data-id="{{ $item->id }}"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#viewModal">
                                                     View
@@ -86,36 +101,42 @@
                                             {{-- Edit --}}
                                             <li>
                                                 <button class="dropdown-item editBtn"
-                                                    data-id="{{ $agent->id }}"
+                                                    data-id="{{ $item->id }}"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#editModal">
                                                     Edit
                                                 </button>
                                             </li>
 
-                                            {{-- 🔥 Agent Transactions --}}
+                                            {{-- 🔥 Merchant Transactions --}}
                                             <li>
-                                                 <a href="{{ route('admin.agents.merchantList', $agent->id) }}" class="dropdown-item">
-                                                    Merchants
+                                                <a href="{{ route('admin.merchants.customers', $item->id) }}" class="dropdown-item">
+                                                    Customers
                                                 </a>
                                             </li>
+                                            {{-- <li>
+                                                <a href="{{ route('admin.merchant.transactions', $item->id) }}"
+                                                class="dropdown-item">
+                                                    Transactions
+                                                </a>
+                                            </li> --}}
 
                                             <li><hr class="dropdown-divider"></li>
 
                                             {{-- Status Toggle --}}
-                                            @if($agent->status == 1)
+                                            @if($item->status == 1)
                                                 <li>
-                                                    <a href="{{ route('admin.agents.toggleStatus', $agent->id) }}"
+                                                    <a href="{{ route('admin.merchants.toggleStatus', $item->id) }}"
                                                     class="dropdown-item text-danger"
-                                                    onclick="return confirm('Suspend this agent?')">
+                                                    onclick="return confirm('Suspend this merchant?')">
                                                         Suspend
                                                     </a>
                                                 </li>
                                             @else
                                                 <li>
-                                                    <a href="{{ route('admin.agents.toggleStatus', $agent->id) }}"
+                                                    <a href="{{ route('admin.merchants.toggleStatus', $item->id) }}"
                                                     class="dropdown-item text-success"
-                                                    onclick="return confirm('Activate this agent?')">
+                                                    onclick="return confirm('Activate this merchant?')">
                                                         Activate
                                                     </a>
                                                 </li>
@@ -124,85 +145,77 @@
                                         </ul>
                                     </div>
                                     {{-- <button class="btn btn-sm btn-info viewBtn"
-                                        data-id="{{ $agent->id }}"
+                                        data-id="{{ $item->id }}"
                                         data-bs-toggle="modal"
                                         data-bs-target="#viewModal">
                                         View
                                     </button>
                                     <button class="btn btn-sm btn-warning editBtn"
-                                        data-id="{{ $agent->id }}"
+                                        data-id="{{ $item->id }}"
                                         data-bs-toggle="modal"
                                         data-bs-target="#editModal">
                                         Edit
                                     </button>
-                                    @if($agent->status == 1)
-                                        <a href="{{ route('admin.agents.toggleStatus', $agent->id) }}"
+                                    @if($item->status == 1)
+                                        <a href="{{ route('admin.merchants.toggleStatus', $item->id) }}"
                                         class="btn btn-sm btn-danger">
                                         Suspend
                                         </a>
                                     @else
-                                        <a href="{{ route('admin.agents.toggleStatus', $agent->id) }}"
+                                        <a href="{{ route('admin.merchants.toggleStatus', $item->id) }}"
                                         class="btn btn-sm btn-success">
                                         Activate
                                         </a>
                                     @endif --}}
+                                    {{-- <button class="btn btn-sm btn-danger">Suspend</button> --}}
                                 </td>
                             </tr>
                         @endforeach
+
+                        {{-- <tr>
+                            <td>#M1002</td>
+                            <td>Chittagong Fashion House</td>
+                            <td>Chittagong</td>
+                            <td>865</td>
+                            <td><span class="badge bg-warning text-dark">Pending</span></td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-info">View</button>
+                                <button class="btn btn-sm btn-warning">Edit</button>
+                                <button class="btn btn-sm btn-success">Approve</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>#M1003</td>
+                            <td>Sylhet Grocery Mart</td>
+                            <td>Sylhet</td>
+                            <td>432</td>
+                            <td><span class="badge bg-danger">Suspended</span></td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-info">View</button>
+                                <button class="btn btn-sm btn-warning">Edit</button>
+                                <button class="btn btn-sm btn-success">Activate</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>#M1004</td>
+                            <td>Rajshahi Mobile Zone</td>
+                            <td>Rajshahi</td>
+                            <td>2,103</td>
+                            <td><span class="badge bg-success">Active</span></td>
+                            <td class="text-center">
+                                <button class="btn btn-sm btn-info">View</button>
+                                <button class="btn btn-sm btn-warning">Edit</button>
+                                <button class="btn btn-sm btn-danger">Suspend</button>
+                            </td>
+                        </tr> --}}
                     </tbody>
                 </table>
             </div>
         </div>
     </main>
 
-    <div class="modal fade" id="addAgentModal" tabindex="-1">
-        <div class="modal-dialog modal-md">
-            <form method="POST" action="{{ route('admin.agents.store') }}">
-                @csrf
-                <div class="modal-content">
-                    <div class="modal-header border-0">
-                        <h5 class="modal-title fw-bold">Add New Agent</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-
-                        <div class="mb-3">
-                            <label class="form-label">Agent Name</label>
-                            <input type="text" name="name" class="form-control" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" name="email" class="form-control" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Status</label>
-                            <select name="status" class="form-control">
-                                <option value="1" selected>Active</option>
-                                <option value="0">Inactive</option>
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Confirm Password</label>
-                            <input type="password" name="password_confirmation" class="form-control" required>
-                        </div>
-
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Add Agent</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <div class="modal fade" id="viewModal" tabindex="-1">
     <div class="modal-dialog modal-md">
@@ -229,6 +242,16 @@
                 </div>
 
                 <div class="mb-3">
+                    <label class="text-muted">Business Name</label>
+                    <div id="view_business"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="text-muted">Address</label>
+                    <div id="view_address"></div>
+                </div>
+
+                <div class="mb-3">
                     <label class="text-muted">Status</label>
                     <div id="view_status"></div>
                 </div>
@@ -242,7 +265,7 @@
 
 <div class="modal fade" id="editModal" tabindex="-1">
     <div class="modal-dialog modal-md">
-        <form method="POST" action="{{ route('admin.agents.update') }}">
+        <form method="POST" action="{{ route('admin.merchants.update') }}">
             @csrf
 
             <input type="hidden" name="id" id="edit_id">
@@ -270,6 +293,16 @@
                     </div>
 
                     <div class="mb-3">
+                        <label class="form-label">Business Name</label>
+                        <input type="text" id="edit_business" name="business_name" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Address</label>
+                        <input type="text" id="edit_address" name="address" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
                         <label class="form-label">Status</label>
                         <select id="edit_status" name="status" class="form-control">
                             <option value="1">Active</option>
@@ -291,14 +324,16 @@
 
 
 
+
+
 @endsection
 
 
 @push('script')
 
-<script>
+    <script>
         function getMerchantUrl(id) {
-            let url = "{{ route('admin.agents.show', ':id') }}";
+            let url = "{{ route('admin.merchants.show', ':id') }}";
             return url.replace(':id', id);
         }
 
@@ -311,6 +346,8 @@
 
                 $('#view_name').text(user.name);
                 $('#view_email').text(user.email);
+                $('#view_business').text(user.merchant?.business_name ?? '');
+                $('#view_address').text(user.merchant?.address ?? '');
                 $('#view_status').text(user.status == 1 ? 'Active' : 'Inactive');
             });
         });
@@ -325,6 +362,8 @@
                 $('#edit_id').val(user.id);
                 $('#edit_name').val(user.name);
                 $('#edit_email').val(user.email);
+                $('#edit_business').val(user.merchant?.business_name ?? '');
+                $('#edit_address').val(user.merchant?.address ?? '');
                 $('#edit_status').val(user.status);
             });
         });
@@ -332,7 +371,7 @@
 
  <script>
         $(document).ready(function () {
-            $('#usersTable').DataTable({
+            $('#merchentsTable').DataTable({
                 dom:
                     "<'row mb-3'<'col-md-6 d-flex align-items-center'B><'col-md-6 d-flex justify-content-end'f>>" +
                     "<'row'<'col-12'tr>>" +

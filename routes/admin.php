@@ -89,6 +89,9 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
     Route::group(['prefix' => 'users', 'as' => 'users.'], function () {
         Route::get('/', [UserController::class, 'index'])->name('index');
         Route::post('/update', [UserController::class, 'update'])->name('update');
+        Route::get('/{id}/activate', [UserController::class, 'activate'])->name('activate');
+        Route::get('/{id}/deactivate', [UserController::class, 'deactivate'])->name('deactivate');
+        Route::get('/{id}/transactions', [UserController::class, 'transactions'])->name('transactions');
     });
 
     Route::group(['prefix' => 'agents', 'as' => 'agents.'], function () {
@@ -96,6 +99,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
         Route::post('/store', [AgentController::class, 'storeAgent'])->name('store');
         Route::get('/view/{id}', [AgentController::class, 'show'])->name('show');
         Route::post('/update', [AgentController::class, 'update'])->name('update');
+        Route::get('/merchant-list/{id}', [AgentController::class, 'merchantList'])->name('merchantList');
         Route::get('/{id}/toggle-status', [AgentController::class, 'toggleStatus'])->name('toggleStatus');
 
 
@@ -107,6 +111,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
         Route::get('/view/{id}', [MerchantController::class, 'show'])->name('show');
         Route::post('/update', [MerchantController::class, 'update'])->name('update');
         Route::get('/{id}/toggle-status', [MerchantController::class, 'toggleStatus'])->name('toggleStatus');
+        Route::get('/{id}/customers', [MerchantController::class, 'customers'])->name('customers');
     });
 
 

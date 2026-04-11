@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -40,5 +41,41 @@ class UserController extends Controller
 
             return back()->with('error', 'Something went wrong. Please try again.');
         }
+    }
+
+    public function transactions($id)
+    {
+
+        $data['title'] = 'User Transactions History';
+        $user = User::findOrFail($id);
+
+        // assuming relation exists
+        $transactions = Transaction::where('customer_id', $id)
+                            ->latest()
+                            ->get();
+
+        $data['user'] = $user;
+        $data['transactions'] = $transactions;
+
+
+        return view('admin.user.transactions', $data);
+    }
+
+    public function activate($id)
+    {
+        $user = User::findOrFail($id);
+        $user->status = 1;
+        $user->save();
+
+        return back()->with('success', 'User activated');
+    }
+
+    public function deactivate($id)
+    {
+        $user = User::findOrFail($id);
+        $user->status = 0;
+        $user->save();
+
+        return back()->with('success', 'User deactivated');
     }
 }

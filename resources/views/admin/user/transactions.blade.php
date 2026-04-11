@@ -1,5 +1,5 @@
 @extends('admin.layouts.master')
-@section('transactions', 'active')
+@section('users', 'active')
 @section('title') Transactions @endsection
 
 @section('content')
@@ -9,76 +9,19 @@
         <div class="page-header">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
                 <div class="mb-3 mb-md-0">
-                    <h2 class="page-content-title fw-semibold fs-5">Transactions</h2>
+                    <h2 class="page-content-title fw-semibold fs-5">Transactions History</h2>
                     <p class="page-subtitle mb-0">Monitor and manage all system transactions</p>
                 </div>
             </div>
         </div>
 
         <!-- ================= FILTER CARD ================= -->
-        <div class="main-card mb-4 p-2">
-            <div class="card-header mb-3">
-                <h5 class="card-title mb-0">Filter Transactions</h5>
-            </div>
 
-            <div class="card-body">
-                <form id="filterForm" method="GET" action="{{ route('admin.transactions.index') }}">
-                    <div class="row g-3">
-
-                        <!-- From Date -->
-                        <div class="col-md-3">
-                            <label class="form-label">From Date</label>
-                            <input type="date" name="from_date" value="{{ request('from_date') }}" class="form-control">
-                        </div>
-
-                        <!-- To Date -->
-                        <div class="col-md-3">
-                            <label class="form-label">To Date</label>
-                            <input type="date" name="to_date" value="{{ request('to_date') }}" class="form-control">
-                        </div>
-
-                        <!-- Status -->
-                        <div class="col-md-3">
-                            <label class="form-label">Status</label>
-                            <select name="status" class="form-select">
-                                <option value="">All</option>
-                                <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                                <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>Approved</option>
-                                <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
-                            </select>
-                        </div>
-
-                        <!-- Merchant -->
-                        <div class="col-md-3">
-                            <label class="form-label">Merchant</label>
-                            <input type="text" name="merchant"  value="{{ request('merchant') }}" class="form-control" placeholder="Merchant name">
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">User</label>
-                            <input type="text" name="user"  value="{{ request('user') }}" class="form-control" placeholder="User name or email">
-                        </div>
-
-                        <!-- Filter Button -->
-                        <div class="col-md-3 d-flex align-items-end">
-                            <button type="submit" class="btn btn-primary-custom w-100">
-                                <i class="fa-solid fa-filter me-1"></i> Filter
-                            </button>
-                        </div>
-                        <div class="col-md-3 d-flex align-items-end">
-                            <a href="{{ route('admin.transactions.index') }}" class="btn btn-secondary w-100" style="padding: 8px;">
-                                Reset
-                            </a>
-                        </div>
-
-                    </div>
-                </form>
-            </div>
-        </div>
 
         <!-- ================= TRANSACTION TABLE ================= -->
         <div class="main-card">
             <div class="card-header d-flex justify-content-between align-items-center mb-3">
-                <h5 class="card-title mb-0">Transaction List</h5>
+                <h5 class="card-title mb-0">Transaction List of  {{ $user->name }}</h5>
             </div>
 
             <div class="table-container">
@@ -86,7 +29,6 @@
                     <thead>
                         <tr>
                             <th>Trx ID</th>
-                            <th>User</th>
                             <th>Merchant</th>
                             <th>Amount</th>
                             <th>Cashback</th>
@@ -98,10 +40,6 @@
                         @foreach($transactions as $trx)
                             <tr>
                                 <td>#TRX1001</td>
-                                <td>
-                                    <div>{{ $trx->customer->name }}</div>
-                                    <small class="text-muted">{{ $trx->customer->email }}</small>
-                                </td>
                                 <td>
                                     <div>{{ $trx->merchant->name }}</div>
                                     <small class="text-muted">{{ $trx->merchant->merchant->business_name }}</small>
@@ -164,14 +102,6 @@
                                                         class="dropdown-item text-success">
                                                             Mark as Paid
                                                         </a>
-                                                    </li>
-                                                @endif
-                                                 @if($trx->cashback->status == 2)
-                                                    <li>
-                                                        <span
-                                                        class="dropdown-item text-success">
-                                                            Already Paid
-                                                        </span>
                                                     </li>
                                                 @endif
                                             @endif

@@ -17,7 +17,11 @@ class AgentController extends Controller
         //         abort(403, 'Sorry !! You are Unauthorized.');
         // }
         $data['title'] = 'Agent List';
-        $data['agents'] = User::where('user_type', 2)->orderBy('id', 'desc')->get();
+        $data['agents'] = User::where('user_type', 2)
+                        ->withCount('merchants')
+                        ->with('merchants')
+                        ->orderBy('id', 'desc')->get();
+
         return view('admin.agent.index', $data);
     }
 
@@ -139,5 +143,24 @@ class AgentController extends Controller
         } while(User::where('referral_code', $code)->exists());
 
         return $code;
+    }
+
+    public function merchantList($id)
+    {
+        // if (is_null($this->user) || !$this->user->can('admin.user.view')) {
+        //         abort(403, 'Sorry !! You are Unauthorized.');
+        // }
+        $data['title'] = 'Agent Merchant List';
+
+        // 👉 Get single agent with merchants
+        $agent = User::where('id', $id)
+                    ->where('user_type', 2) // agent
+                    ->with('merchants')
+                    ->withCount('merchants')
+                    ->firstOrFail();
+
+        $data['agent'] = $agent;
+        $data['merchants'] = $agent->merchants;
+        return view('admin.agent.merchant', $data);
     }
 }

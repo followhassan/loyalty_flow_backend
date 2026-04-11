@@ -399,6 +399,7 @@ class AuthController extends Controller
                 'referred_by'  => $user->referred_by,
                 'role_status'  => $user->role_status,
                 'status'       => $user->status,
+                'image'        => $user->image ? asset($user->image) : null,
                 'created_at'   => $user->created_at,
                 'updated_at'   => $user->updated_at,
             ];
@@ -514,7 +515,7 @@ class AuthController extends Controller
                 }else{
                     $user->user_type = 2;
                     $user->save();
-                }                
+                }
             }
 
             if($targetRole == 0) {
@@ -615,7 +616,7 @@ class AuthController extends Controller
                 return $this->errorResponse('Unauthorized', 401);
             }
 
-            $request->validate([                
+            $request->validate([
                 'new_password'     => 'required|min:6|confirmed',
             ]);
 

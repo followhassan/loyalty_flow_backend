@@ -14,7 +14,12 @@ class MerchantController extends Controller
         //         abort(403, 'Sorry !! You are Unauthorized.');
         // }
         $data['title'] = 'Merchant List';
-        $data['merchents'] = User::with('merchant')->where('user_type', 1)->orderBy('id', 'desc')->get();
+        
+        $data['merchents'] = User::with('merchant')
+                            ->withCount('merchantTransactions')
+                            ->withSum('merchantTransactions', 'amount')
+                            ->where('user_type', 1)
+                            ->orderBy('id', 'desc')->get();
         return view('admin.merchent.index', $data);
     }
 
@@ -74,5 +79,19 @@ class MerchantController extends Controller
         $user->save();
 
         return redirect()->back()->with('success', 'Merchant status updated successfully.');
+    }
+
+    public function customers($id)
+    {
+        $title = 'Merchant Customers List';
+        $merchant = User::findOrFail($id);
+
+        $customers = User::whereIn('id', function ($query) use ($id) {
+            $query->select('customer_id')
+                ->from('transactions')
+                ->where('merchant_id', $id);
+        })->get();
+
+        return view('admin.merchent.customers', compact('merchant', 'customers', 'title'));
     }
 }
