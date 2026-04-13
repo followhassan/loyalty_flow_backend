@@ -40,7 +40,7 @@ Route::prefix('auth')->group(function () {
         Route::get('/merchant/qr', [ProfileController::class, 'merchantQr']);
         Route::get('/merchant/my-transaction', [MerchantTransactionController::class, 'merchantTransactions']);
         Route::get('/merchant/transaction/approve/{id}', [MerchantTransactionController::class, 'approveTransaction']);
-        Route::get('/merchant/transaction/reject/{id}', [MerchantTransactionController::class, 'rejectTransaction']);
+        Route::post('/merchant/transaction/reject/{id}', [MerchantTransactionController::class, 'rejectTransaction']);
 
         Route::get('/merchant/customer-list', [MerchentCustomerController::class, 'customers']);
         // Route::get('/merchant/customer-details/{id}', [MerchentCustomerController::class, 'customerDetails']);
@@ -53,7 +53,7 @@ Route::prefix('auth')->group(function () {
 
         Route::get('/agent/dashboard', [DashboardController::class, 'dashboard']);
         Route::get('/agent/referral', [DashboardController::class, 'referral']);
-        Route::get('/agent/merchant-list', [DashboardController::class, 'merchants']);  
+        Route::get('/agent/merchant-list', [DashboardController::class, 'merchants']);
         Route::get('/agent/growth', [DashboardController::class, 'growth']);
 
 

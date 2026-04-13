@@ -41,6 +41,7 @@ class TransactionController extends Controller
                     'id'        => $t->id,
                     'amount'    => $t->amount,
                     'status'    => $t->status,
+                    'reject_reason' => $t->reject_reason,
                     'created_at' => $t->created_at,
                     'customer'  => [
                         'id'    => $t->customer->id,
@@ -119,6 +120,7 @@ class TransactionController extends Controller
 
     public function rejectTransaction(Request $request, $id)
     {
+        // dd($request->all());
         try {
 
             $user = Auth::user();
