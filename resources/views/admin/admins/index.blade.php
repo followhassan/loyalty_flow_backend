@@ -166,12 +166,12 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="user-actions-container">
-                                        @can('edit admin')
+                                        {{-- @can('edit admin') --}}
                                             <button class="user-action-btn edit" onclick="openEditModal({{ $user->id }})"
                                                 title="Edit">
                                                 <i class="fas fa-edit"></i>
                                             </button>
-                                        @endcan
+                                        {{-- @endcan --}}
                                         @can('edit admin')
                                             <a class="user-action-btn edit" href="javascript:void(0)" data-bs-toggle="modal"
                                                 data-bs-target="#changePasswordModal" data-user-id="{{ $user->id }}"

@@ -56,11 +56,11 @@
                                 <div class="action-buttons">
                                     {{-- <a class="btn btn-info btn-xs"
                                                         href="{{ route('admin.roles.show', $role->id) }}">Show</a> --}}
-                                    @can('edit role')
+                                    {{-- @can('edit role') --}}
                                         <a class="action-btn view" href="{{ route('admin.roles.edit', $role->id) }}"
                                             title="Edit">
                                             <i class="fas fa-pencil"></i></a>
-                                    @endcan
+                                    {{-- @endcan --}}
 
                                     {{-- <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST"
                                                         class="d-inline">
