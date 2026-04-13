@@ -148,12 +148,12 @@
                         <span class="sidebar-text">System Settings</span>
                     </a>
                 @endif --}}
-                {{-- @can('view admins') --}}
+                @can('view admins')
                     <a class="nav-link @yield(section: 'admin-users')" href="{{ route('admin.admins.index') }}">
                         <i class="fas fa-users"></i>
                         <span class="sidebar-text">Admin Users</span>
                     </a>
-                {{-- @endcan --}}
+                @endcan
                 @can('view settings')
                     <a class="nav-link @yield(section: 'settings')" href="{{ route('admin.settings.index') }}">
                         <i class="fas fa-cog"></i>
