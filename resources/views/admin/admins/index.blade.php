@@ -38,19 +38,18 @@
                 <p class="page-subtitle">Manage super admin and support users</p>
             </div>
             <div class="d-flex gap-2">
-                {{-- @can('role.manage') --}}
-                {{-- @can('admin.role.view') --}}
+                @can('view roles')
                     <a href="{{ route('admin.roles.index') }}" class="btn btn-primary">
                         <i class="fas fa-user-shield me-2"></i>Manage Roles
                     </a>
-                {{-- @endcan --}}
-                {{-- @endcan --}}
+                @endcan
 
-                {{-- @can('admin.user.create') --}}
+
+                @can('create admin')
                     <button class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addUserModal">
                         <i class="fas fa-plus me-2"></i>Add Admin User
                     </button>
-                {{-- @endcan --}}
+                @endcan
             </div>
             {{-- <button class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addUserModal">
             <i class="fas fa-plus me-2"></i>Add Admin User
@@ -128,7 +127,7 @@
                             <th class="text-start">Name</th>
                             <th class="text-center">Role</th>
                             <th class="text-center">Status</th>
-                            <th class="text-center">Last Login</th>
+                            {{-- <th class="text-center">Last Login</th> --}}
                             <th class="text-center">Created</th>
                             <th class="text-center">Permissions</th>
                             <th class="text-center">Actions</th>
@@ -155,7 +154,7 @@
                                         {{ $user->status ? 'Active' : 'Inactive' }}
                                     </span>
                                 </td>
-                                <td class="text-center">{{ $user->last_login_at?->format('d/m/Y') ?? '-' }}</td>
+                                {{-- <td class="text-center">{{ $user->last_login_at?->format('d/m/Y') ?? '-' }}</td> --}}
                                 <td class="text-center">{{ $user->created_at?->format('d/m/Y') ?? '-' }}</td>
                                 <td class="text-center">
                                     @php
@@ -167,20 +166,20 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="user-actions-container">
-                                        {{-- @can('admin.user.edit') --}}
+                                        @can('edit admin')
                                             <button class="user-action-btn edit" onclick="openEditModal({{ $user->id }})"
                                                 title="Edit">
                                                 <i class="fas fa-edit"></i>
                                             </button>
-                                        {{-- @endcan --}}
-                                        {{-- @can('admin.user.edit') --}}
+                                        @endcan
+                                        @can('edit admin')
                                             <a class="user-action-btn edit" href="javascript:void(0)" data-bs-toggle="modal"
                                                 data-bs-target="#changePasswordModal" data-user-id="{{ $user->id }}"
                                                 title="Change Password" data-action="logs">
                                                 <i class="fa-solid fa-key me-2"></i>
                                             </a>
-                                        {{-- @endcan --}}
-                                        {{-- @can('admin.user.edit') --}}
+                                        @endcan
+                                        @can('edit admin')
                                             @if ($role != 'superadmin')
                                                 <button class="user-action-btn toggle-status"
                                                     onclick="toggleUserStatus({{ $user->id }}, {{ $user->status }})">
@@ -188,7 +187,7 @@
                                                         class="fas {{ $user->status ? 'fa-ban text-warning' : 'fa-check text-success' }}"></i>
                                                 </button>
                                             @endif
-                                        {{-- @endcan --}}
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>
@@ -557,7 +556,7 @@
                 let userId = $('#editUserId').val();
                 let formData = $(this).serialize();
                 $.ajax({
-                    url: `/admin/users/${userId}`,
+                    url: `/admin/admins/${userId}`,
                     method: 'PUT',
                     data: formData,
                     success: function(res) {
@@ -581,7 +580,7 @@
 
         // Open Edit Modal dynamically
         function openEditModal(userId) {
-            $.get(`/admin/users/${userId}/edit`, function(user) {
+            $.get(`/admin/admins/${userId}/edit`, function(user) {
                 $('#editUserId').val(user.id);
                 $('#editUserName').val(user.name);
                 $('#editUserRole').val(user.role);
@@ -615,7 +614,7 @@
                 'Are you sure you want to activate this user?';
 
             if (confirm(confirmMessage)) {
-                $.post(`/admin/users/${userId}/suspend`, {
+                $.post(`/admin/admins/${userId}/suspend`, {
                     _token: "{{ csrf_token() }}"
                 }, function(res) {
                     iziToast.success({

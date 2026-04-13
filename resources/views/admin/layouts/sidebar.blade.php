@@ -33,26 +33,36 @@
         <!-- Navigation -->
         <nav class="sidebar-nav flex-grow-1 p-3">
             <div class="nav flex-column">
-                <a class="nav-link @yield('dashboard')" href="{{ route('admin.dashboard') }}">
-                    <i class="fas fa-th-large"></i>
-                    <span class="sidebar-text">Dashboard</span>
-                </a>
-                <a class="nav-link @yield(section: 'users')" href="{{ route('admin.users.index') }}">
-                    <i class="fas fa-building"></i>
-                    <span class="sidebar-text">Users</span>
-                </a>
-                <a class="nav-link @yield(section: 'merchants')" href="{{ route('admin.merchants.index') }}">
-                    <i class="fa-solid fa-store"></i>
-                    <span class="sidebar-text">Merchant</span>
-                </a>
-                <a class="nav-link @yield(section: 'agents')" href="{{ route('admin.agents.index') }}">
-                    <i class="fa-solid fa-jug-detergent"></i>
-                    <span class="sidebar-text">Agent</span>
-                </a>
-                <a href="{{ route('admin.transactions.index') }}" class="nav-link @yield(section: 'transactions')">
-                    <i class="fa-solid fa-receipt"></i>
-                    <span>Transactions</span>
-                </a>
+                @can('view dashboard')
+                    <a class="nav-link @yield('dashboard')" href="{{ route('admin.dashboard') }}">
+                        <i class="fas fa-th-large"></i>
+                        <span class="sidebar-text">Dashboard</span>
+                    </a>
+                @endcan
+                @can('view users')
+                    <a class="nav-link @yield(section: 'users')" href="{{ route('admin.users.index') }}">
+                        <i class="fas fa-building"></i>
+                        <span class="sidebar-text">Users</span>
+                    </a>
+                @endcan
+                @can('view merchants')
+                    <a class="nav-link @yield(section: 'merchants')" href="{{ route('admin.merchants.index') }}">
+                        <i class="fa-solid fa-store"></i>
+                        <span class="sidebar-text">Merchant</span>
+                    </a>
+                @endcan
+                @can('view agents')
+                    <a class="nav-link @yield(section: 'agents')" href="{{ route('admin.agents.index') }}">
+                        <i class="fa-solid fa-jug-detergent"></i>
+                        <span class="sidebar-text">Agent</span>
+                    </a>
+                @endcan
+                @can('view transactions')
+                    <a href="{{ route('admin.transactions.index') }}" class="nav-link @yield(section: 'transactions')">
+                        <i class="fa-solid fa-receipt"></i>
+                        <span>Transactions</span>
+                    </a>
+                @endcan
                 {{-- <a href="{{route('admin.promotions.index')}}" class="nav-link @yield(section: 'promotions')">
                     <i class="fas fa-bullhorn"></i>
                     <span>Rules & Promotion</span>
@@ -138,14 +148,18 @@
                         <span class="sidebar-text">System Settings</span>
                     </a>
                 @endif --}}
-                <a class="nav-link @yield(section: 'admin-users')" href="{{ route('admin.admins.index') }}">
-                    <i class="fas fa-users"></i>
-                    <span class="sidebar-text">Admin Users</span>
-                </a>
-                <a class="nav-link @yield(section: 'settings')" href="{{ route('admin.settings.index') }}">
-                    <i class="fas fa-cog"></i>
-                    <span class="sidebar-text">System Settings</span>
-                </a>
+                @can('view admins')
+                    <a class="nav-link @yield(section: 'admin-users')" href="{{ route('admin.admins.index') }}">
+                        <i class="fas fa-users"></i>
+                        <span class="sidebar-text">Admin Users</span>
+                    </a>
+                @endcan
+                @can('view settings')
+                    <a class="nav-link @yield(section: 'settings')" href="{{ route('admin.settings.index') }}">
+                        <i class="fas fa-cog"></i>
+                        <span class="sidebar-text">System Settings</span>
+                    </a>
+                @endcan
             </div>
         </nav>
 

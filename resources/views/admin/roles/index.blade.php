@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-@section('users', 'active')
+@section('admin-users', 'active')
 @section('title') Admin| roles @endsection
 
 @push('style')
@@ -20,9 +20,9 @@
                 <p class="page-subtitle">Manage Roles</p>
             </div>
             <div class="d-flex gap-2">
-                {{-- @can('admin.role.create') --}}
+                @can('create role')
                     <a href="{{ route('admin.roles.create') }}" class="btn btn-primary">+Create Role</a>
-                {{-- @endcan --}}
+                @endcan
             </div>
         </div>
 
@@ -56,11 +56,11 @@
                                 <div class="action-buttons">
                                     {{-- <a class="btn btn-info btn-xs"
                                                         href="{{ route('admin.roles.show', $role->id) }}">Show</a> --}}
-                                    {{-- @can('admin.role.edit') --}}
-                                    <a class="action-btn view" href="{{ route('admin.roles.edit', $role->id) }}"
-                                        title="Edit">
-                                        <i class="fas fa-pencil"></i></a>
-                                    {{-- @endcan --}}
+                                    @can('edit role')
+                                        <a class="action-btn view" href="{{ route('admin.roles.edit', $role->id) }}"
+                                            title="Edit">
+                                            <i class="fas fa-pencil"></i></a>
+                                    @endcan
 
                                     {{-- <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST"
                                                         class="d-inline">

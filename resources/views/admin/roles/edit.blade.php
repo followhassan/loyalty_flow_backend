@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-@section('users', 'active')
+@section('admin-users', 'active')
 @section('title') Admin| role edit @endsection
 
 @push('style')

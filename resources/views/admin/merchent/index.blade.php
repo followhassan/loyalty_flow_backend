@@ -89,31 +89,37 @@
                                         <ul class="dropdown-menu">
 
                                             {{-- View --}}
-                                            <li>
-                                                <button class="dropdown-item viewBtn"
-                                                    data-id="{{ $item->id }}"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#viewModal">
-                                                    View
-                                                </button>
-                                            </li>
+                                            @can('view merchants')
+                                                <li>
+                                                    <button class="dropdown-item viewBtn"
+                                                        data-id="{{ $item->id }}"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#viewModal">
+                                                        View
+                                                    </button>
+                                                </li>
+                                            @endcan
 
                                             {{-- Edit --}}
-                                            <li>
-                                                <button class="dropdown-item editBtn"
-                                                    data-id="{{ $item->id }}"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#editModal">
-                                                    Edit
-                                                </button>
-                                            </li>
+                                            @can('update merchant')
+                                                <li>
+                                                    <button class="dropdown-item editBtn"
+                                                        data-id="{{ $item->id }}"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#editModal">
+                                                        Edit
+                                                    </button>
+                                                </li>
+                                            @endcan
 
                                             {{-- 🔥 Merchant Transactions --}}
-                                            <li>
-                                                <a href="{{ route('admin.merchants.customers', $item->id) }}" class="dropdown-item">
-                                                    Customers
-                                                </a>
-                                            </li>
+                                            @can('view merchant customer')
+                                                <li>
+                                                    <a href="{{ route('admin.merchants.customers', $item->id) }}" class="dropdown-item">
+                                                        Customers
+                                                    </a>
+                                                </li>
+                                            @endcan
                                             {{-- <li>
                                                 <a href="{{ route('admin.merchant.transactions', $item->id) }}"
                                                 class="dropdown-item">
@@ -121,26 +127,28 @@
                                                 </a>
                                             </li> --}}
 
-                                            <li><hr class="dropdown-divider"></li>
+                                            @can('update merchant')
+                                                <li><hr class="dropdown-divider"></li>
 
-                                            {{-- Status Toggle --}}
-                                            @if($item->status == 1)
-                                                <li>
-                                                    <a href="{{ route('admin.merchants.toggleStatus', $item->id) }}"
-                                                    class="dropdown-item text-danger"
-                                                    onclick="return confirm('Suspend this merchant?')">
-                                                        Suspend
-                                                    </a>
-                                                </li>
-                                            @else
-                                                <li>
-                                                    <a href="{{ route('admin.merchants.toggleStatus', $item->id) }}"
-                                                    class="dropdown-item text-success"
-                                                    onclick="return confirm('Activate this merchant?')">
-                                                        Activate
-                                                    </a>
-                                                </li>
-                                            @endif
+                                                {{-- Status Toggle --}}
+                                                @if($item->status == 1)
+                                                    <li>
+                                                        <a href="{{ route('admin.merchants.toggleStatus', $item->id) }}"
+                                                        class="dropdown-item text-danger"
+                                                        onclick="return confirm('Suspend this merchant?')">
+                                                            Suspend
+                                                        </a>
+                                                    </li>
+                                                @else
+                                                    <li>
+                                                        <a href="{{ route('admin.merchants.toggleStatus', $item->id) }}"
+                                                        class="dropdown-item text-success"
+                                                        onclick="return confirm('Activate this merchant?')">
+                                                            Activate
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                            @endcan
 
                                         </ul>
                                     </div>

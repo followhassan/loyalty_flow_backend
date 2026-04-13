@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Artisan;
 
 class DashboardController extends Controller
 {
@@ -36,5 +37,15 @@ class DashboardController extends Controller
         $data['values'] = $transactions->pluck('total');
 
         return view('admin.dashboard', compact('data'));
+    }
+
+    public function cacheClear()
+    {
+        Artisan::call('cache:clear');
+        Artisan::call('config:clear');
+        Artisan::call('route:clear');
+        Artisan::call('view:clear');
+
+        return back()->with('success', 'Cache cleared successfully!');
     }
 }

@@ -22,9 +22,11 @@
                     {{-- <p class="page-subtitle">Manage your SaaS users and subscriptions</p> --}}
                 </div>
                 <div class="d-flex align-items-center gap-2">
-                    <button class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addAgentModal">
-                        <i class="fa-solid fa-plus me-1"></i> Add Agent
-                    </button>
+                    @can('view agents')
+                        <button class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addAgentModal">
+                            <i class="fa-solid fa-plus me-1"></i> Add Agent
+                        </button>
+                    @endcan
                 </div>
             </div>
         </div>
@@ -74,52 +76,61 @@
                                         <ul class="dropdown-menu">
 
                                             {{-- View --}}
-                                            <li>
-                                                <button class="dropdown-item viewBtn"
-                                                    data-id="{{ $agent->id }}"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#viewModal">
-                                                    View
-                                                </button>
-                                            </li>
+                                            @can('view agents')
+                                                <li>
+                                                    <button class="dropdown-item viewBtn"
+                                                        data-id="{{ $agent->id }}"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#viewModal">
+                                                        View
+                                                    </button>
+                                                </li>
+                                            @endcan
 
                                             {{-- Edit --}}
-                                            <li>
-                                                <button class="dropdown-item editBtn"
-                                                    data-id="{{ $agent->id }}"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#editModal">
-                                                    Edit
-                                                </button>
-                                            </li>
+                                            @can('update agent')
+                                                <li>
+                                                    <button class="dropdown-item editBtn"
+                                                        data-id="{{ $agent->id }}"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#editModal">
+                                                        Edit
+                                                    </button>
+                                                </li>
+                                            @endcan
 
                                             {{-- 🔥 Agent Transactions --}}
-                                            <li>
-                                                 <a href="{{ route('admin.agents.merchantList', $agent->id) }}" class="dropdown-item">
-                                                    Merchants
-                                                </a>
-                                            </li>
-
-                                            <li><hr class="dropdown-divider"></li>
-
-                                            {{-- Status Toggle --}}
-                                            @if($agent->status == 1)
+                                            @can('view agent merchants')
                                                 <li>
-                                                    <a href="{{ route('admin.agents.toggleStatus', $agent->id) }}"
-                                                    class="dropdown-item text-danger"
-                                                    onclick="return confirm('Suspend this agent?')">
-                                                        Suspend
+                                                    <a href="{{ route('admin.agents.merchantList', $agent->id) }}" class="dropdown-item">
+                                                        Merchants
                                                     </a>
                                                 </li>
-                                            @else
-                                                <li>
-                                                    <a href="{{ route('admin.agents.toggleStatus', $agent->id) }}"
-                                                    class="dropdown-item text-success"
-                                                    onclick="return confirm('Activate this agent?')">
-                                                        Activate
-                                                    </a>
-                                                </li>
-                                            @endif
+                                            @endcan
+
+                                            @can('update agent')
+                                                <li><hr class="dropdown-divider"></li>
+
+                                                {{-- Status Toggle --}}
+                                                @if($agent->status == 1)
+                                                    <li>
+                                                        <a href="{{ route('admin.agents.toggleStatus', $agent->id) }}"
+                                                        class="dropdown-item text-danger"
+                                                        onclick="return confirm('Suspend this agent?')">
+                                                            Suspend
+                                                        </a>
+                                                    </li>
+                                                @else
+                                                    <li>
+                                                        <a href="{{ route('admin.agents.toggleStatus', $agent->id) }}"
+                                                        class="dropdown-item text-success"
+                                                        onclick="return confirm('Activate this agent?')">
+                                                            Activate
+                                                        </a>
+                                                    </li>
+                                                @endif
+
+                                            @endcan
 
                                         </ul>
                                     </div>

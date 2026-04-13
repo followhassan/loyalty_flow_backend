@@ -64,6 +64,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'mi
     Route::group(['prefix' => 'settings', 'as' => 'settings.'], function () {
         Route::get('/', [SettingsController::class, 'index'])->name('index');
         Route::post('store', [SettingsController::class, 'store'])->name('store');
+        Route::post('cashback/update', [SettingsController::class, 'cashbackUpdate'])->name('cashback.update');
     });
 
     // admins routes

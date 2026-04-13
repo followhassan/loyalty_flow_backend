@@ -136,45 +136,51 @@
                                         </button>
 
                                         <ul class="dropdown-menu">
-                                            <li>
-                                                <button class="dropdown-item">View</button>
-                                            </li>
+                                            {{-- @can('view transactions')
+                                                <li>
+                                                    <button class="dropdown-item">View</button>
+                                                </li>
+                                            @endcan
 
-                                            <li>
-                                                <button class="dropdown-item">Receipt</button>
-                                            </li>
+                                            @can('view transactions')
+                                                <li>
+                                                    <button class="dropdown-item">Receipt</button>
+                                                </li>
+                                            @endcan --}}
 
-                                            @if($trx->status == 1 && $trx->cashback)
-                                                <li><hr class="dropdown-divider"></li>
+                                            @can('transactions edit')
+                                                @if($trx->status == 1 && $trx->cashback)
+                                                    <li><hr class="dropdown-divider"></li>
 
-                                                {{-- Mark as Mature --}}
-                                                @if($trx->cashback->status == 0)
-                                                    <li>
-                                                        <a href="{{ route('admin.transactions.cashback.mature', $trx->cashback->id) }}"
-                                                        class="dropdown-item text-warning">
-                                                            Mark as Mature
-                                                        </a>
-                                                    </li>
+                                                    {{-- Mark as Mature --}}
+                                                    @if($trx->cashback->status == 0)
+                                                        <li>
+                                                            <a href="{{ route('admin.transactions.cashback.mature', $trx->cashback->id) }}"
+                                                            class="dropdown-item text-warning">
+                                                                Mark as Mature
+                                                            </a>
+                                                        </li>
+                                                    @endif
+
+                                                    {{-- Mark as Paid --}}
+                                                    @if($trx->cashback->status == 1)
+                                                        <li>
+                                                            <a href="{{ route('admin.transactions.cashback.paid', $trx->cashback->id) }}"
+                                                            class="dropdown-item text-success">
+                                                                Mark as Paid
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                    @if($trx->cashback->status == 2)
+                                                        <li>
+                                                            <span
+                                                            class="dropdown-item text-success">
+                                                                Already Paid
+                                                            </span>
+                                                        </li>
+                                                    @endif
                                                 @endif
-
-                                                {{-- Mark as Paid --}}
-                                                @if($trx->cashback->status == 1)
-                                                    <li>
-                                                        <a href="{{ route('admin.transactions.cashback.paid', $trx->cashback->id) }}"
-                                                        class="dropdown-item text-success">
-                                                            Mark as Paid
-                                                        </a>
-                                                    </li>
-                                                @endif
-                                                 @if($trx->cashback->status == 2)
-                                                    <li>
-                                                        <span
-                                                        class="dropdown-item text-success">
-                                                            Already Paid
-                                                        </span>
-                                                    </li>
-                                                @endif
-                                            @endif
+                                            @endcan
                                         </ul>
                                     </div>
                                     {{-- <button class="btn btn-sm btn-info">View</button>

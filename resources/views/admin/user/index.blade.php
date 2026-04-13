@@ -83,59 +83,67 @@
                                         <ul class="dropdown-menu">
 
                                             {{-- View --}}
-                                            <li>
-                                                <button class="dropdown-item viewBtn"
-                                                    data-id="{{ $item->id }}"
-                                                    data-userid="{{ $item->user_id }}"
-                                                    data-name="{{ $item->name }}"
-                                                    data-email="{{ $item->email }}"
-                                                    data-phone="{{ $item->phone }}"
-                                                    data-status="{{ $item->status }}"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#viewUserModal">
-                                                    View
-                                                </button>
-                                            </li>
+                                            @can('view users')
+                                                <li>
+                                                    <button class="dropdown-item viewBtn"
+                                                        data-id="{{ $item->id }}"
+                                                        data-userid="{{ $item->user_id }}"
+                                                        data-name="{{ $item->name }}"
+                                                        data-email="{{ $item->email }}"
+                                                        data-phone="{{ $item->phone }}"
+                                                        data-status="{{ $item->status }}"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#viewUserModal">
+                                                        View
+                                                    </button>
+                                                </li>
+                                            @endcan
 
                                             {{-- Edit --}}
-                                            <li>
-                                                <button class="dropdown-item editBtn"
-                                                    data-id="{{ $item->id }}"
-                                                    data-name="{{ $item->name }}"
-                                                    data-email="{{ $item->email }}"
-                                                    data-phone="{{ $item->phone }}"
-                                                    data-status="{{ $item->status }}"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#editUserModal">
-                                                    Edit
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <a href="{{ route('admin.users.transactions', $item->id) }}" class="dropdown-item">
-                                                    Transactions
-                                                </a>
-                                            </li>
-
-                                            <li><hr class="dropdown-divider"></li>
-
-                                            {{-- Optional: Status Toggle --}}
-                                            @if ($item->status == 1)
+                                            @can('update user')
                                                 <li>
-                                                    <a href="{{ route('admin.users.deactivate', $item->id) }}"
-                                                    class="dropdown-item text-danger"
-                                                    onclick="return confirm('Deactivate this user?')">
-                                                        Deactivate
+                                                    <button class="dropdown-item editBtn"
+                                                        data-id="{{ $item->id }}"
+                                                        data-name="{{ $item->name }}"
+                                                        data-email="{{ $item->email }}"
+                                                        data-phone="{{ $item->phone }}"
+                                                        data-status="{{ $item->status }}"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#editUserModal">
+                                                        Edit
+                                                    </button>
+                                                </li>
+                                            @endcan
+                                            @can('view user transactions')
+                                                <li>
+                                                    <a href="{{ route('admin.users.transactions', $item->id) }}" class="dropdown-item">
+                                                        Transactions
                                                     </a>
                                                 </li>
-                                            @else
-                                                <li>
-                                                    <a href="{{ route('admin.users.activate', $item->id) }}"
-                                                    class="dropdown-item text-success"
-                                                    onclick="return confirm('Activate this user?')">
-                                                        Activate
-                                                    </a>
-                                                </li>
-                                            @endif
+                                            @endcan
+
+                                            @can('update user')
+                                                <li><hr class="dropdown-divider"></li>
+
+                                                {{-- Optional: Status Toggle --}}
+                                                @if ($item->status == 1)
+                                                    <li>
+                                                        <a href="{{ route('admin.users.deactivate', $item->id) }}"
+                                                        class="dropdown-item text-danger"
+                                                        onclick="return confirm('Deactivate this user?')">
+                                                            Deactivate
+                                                        </a>
+                                                    </li>
+                                                @else
+                                                    <li>
+                                                        <a href="{{ route('admin.users.activate', $item->id) }}"
+                                                        class="dropdown-item text-success"
+                                                        onclick="return confirm('Activate this user?')">
+                                                            Activate
+                                                        </a>
+                                                    </li>
+                                                @endif
+                                            @endcan
 
                                         </ul>
                                     </div>

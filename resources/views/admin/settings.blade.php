@@ -185,7 +185,7 @@
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
 
 
 
@@ -194,11 +194,45 @@
             <hr class="my-3"> --}}
 
             <!-- Save Button -->
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col-12">
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-primary-custom px-3" type="submit">
                             <i class="fas fa-save me-2"></i>Save All Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form action="{{ route('admin.settings.cashback.update') }}" method="POST" >
+            @csrf
+            <div class="settings-section">
+                <div class="settings-section-header">
+                    <div class="d-flex gap-2">
+                        <i class="fas fa-cog text-primary" style="color: var(--primary-blue); font-size: 20px;"></i>
+                        <div>
+                            <h5 class="settings-section-title">Cashback Settings</h5>
+                        </div>
+                    </div>
+                    <p class="settings-section-subtitle">Configure Cashback Setup</p>
+                </div>
+                <div class="settings-section-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label for="user_cashback_rate" class="form-label fw-medium">Use Cashback Rate</label>
+                            <input type="number" class="form-control" id="user_cashback_rate" name="user_cashback_rate"
+                                value="{{ old('user_cashback_rate', $payment_cashback->percentage ?? '') }}">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary-custom px-3" type="submit">
+                            <i class="fas fa-save me-2"></i>Save Cashback Settings
                         </button>
                     </div>
                 </div>
