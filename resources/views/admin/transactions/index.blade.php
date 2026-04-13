@@ -104,7 +104,7 @@
                                 </td>
                                 <td>
                                     <div>{{ $trx->merchant->name }}</div>
-                                    <small class="text-muted">{{ $trx->merchant->merchant->business_name }}</small>
+                                    <small class="text-muted">{{ $trx->merchant->merchant?->business_name }}</small>
                                 </td>
                                 <td>${{ $trx->amount }}</td>
                                 <td class="text-success">
