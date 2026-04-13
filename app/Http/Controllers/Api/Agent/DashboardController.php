@@ -93,7 +93,7 @@ class DashboardController extends Controller
             }
 
             $merchants = Merchant::where('agent_id', $agent->id)
-                ->with(['user:id,name,email,phone','status'])
+                ->with(['user:id,name,email,phone,status'])
                 ->select('id','user_id','business_name','created_at')
                 ->latest()
                 ->get();

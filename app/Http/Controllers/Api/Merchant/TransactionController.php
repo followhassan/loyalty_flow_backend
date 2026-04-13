@@ -140,7 +140,7 @@ class TransactionController extends Controller
             }
 
             $transaction->status = 2;
-            $transaction->rejection_reason = $request->reject_reason;
+            $transaction->reject_reason = $request->reject_reason;
             $transaction->save();
 
             return $this->successResponse($transaction, 'Rejected', 200);
